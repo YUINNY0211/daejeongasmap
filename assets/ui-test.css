@@ -65,3 +65,42 @@ body.map-fullscreen #mapViewport{grid-column:1;grid-row:2;min-height:0;min-width
 .install-screenshot{grid-column:1/-1;margin:4px 0 8px;max-width:420px}
 .install-screenshot img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:10px}
 #installGuide .install-screenshot figcaption{margin-top:4px;font-size:12px;color:var(--muted)}
+
+/* Approved home-menu reference: only home cards and fixed dock artwork. */
+#site-guide>h2{font-size:18px;line-height:1.4;margin:0 0 12px;color:#242c28}
+#site-guide .guide-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#site-guide .guide-link{gap:12px;min-height:72px;padding:13px 14px;border:1px solid #e3e6e6;border-radius:17px;background:#fff;color:#242c28;font-size:16px;font-weight:650;line-height:1.35}
+.home-menu-icon{display:inline-grid;place-items:center;flex:none;width:44px;height:44px;border-radius:14px}
+.home-menu-icon svg{display:block;width:26px;height:26px}
+.home-icon-notice{background:#fff0e8;color:#e77943}
+.home-icon-guide,.home-icon-map{background:#e8f6f1;color:#198f7a}
+.home-icon-faq,.home-icon-report{background:#edf1ff;color:#527cd1}
+.home-icon-updates,.home-icon-menu{background:#f4ecfa;color:#a272d0}
+#site-guide .home-menu-label{min-width:0;font-size:inherit;overflow-wrap:anywhere}
+.dock{padding-top:2px;padding-bottom:calc(2px + env(safe-area-inset-bottom,0px))}
+.dock>a,.dock>button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:44px;padding:2px 6px;font-weight:650;color:#242c28}
+.dock .home-menu-icon{display:grid;width:36px;height:36px;border-radius:12px;margin:0}
+.dock .home-menu-icon svg{width:23px;height:23px}
+.dock .dock-label{display:block;margin:0;font-size:12px;line-height:1.2}
+/* The panel is an opaque surface, independent of the map compositing context. */
+#stationPanel{background:#fff;background-image:none;opacity:1;filter:none;mix-blend-mode:normal;isolation:isolate;z-index:20;-webkit-backdrop-filter:none;backdrop-filter:none}
+@media(max-width:767px){
+ #site-guide .guide-link{gap:9px;min-height:64px;padding:10px;font-size:13px;border-radius:15px}
+ #site-guide .home-menu-icon{width:36px;height:36px;border-radius:12px}
+ #site-guide .home-menu-icon svg{width:23px;height:23px}
+ .floating-report{bottom:calc(78px + env(safe-area-inset-bottom,0px))}
+ body.map-fullscreen .floating-report{bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+ body.map-fullscreen #map-section.has-station{grid-template-rows:auto minmax(0,1fr) auto}
+ body.map-fullscreen #map-section{padding-bottom:78px}
+ body.map-fullscreen #stationPanel{height:auto;max-height:min(42dvh,320px);align-self:start;padding:8px 10px;margin:0 6px 0}
+ #stationPanel .compact-head{gap:7px}
+ #stationPanel .compact-title h2{margin:0}
+ #stationPanel .sheet-identity{margin:4px 0 0;gap:5px 10px}
+ #stationPanel .station-tools{margin-top:5px;gap:7px}
+ #stationPanel .station-tools button{min-height:44px}
+ #stationPanel .station-tags{margin-top:5px;gap:5px}
+ #stationPanel .station-detail{margin-top:5px;padding-top:5px}
+ #stationPanel .station-detail .detail{margin:0;line-height:1.6}
+ #stationPanel .route-settings[hidden]{display:none}
+}
+@media(max-width:359px){#site-guide .guide-link{gap:7px;padding:8px;font-size:12px}#site-guide .home-menu-icon{width:30px;height:30px;border-radius:10px}#site-guide .home-menu-icon svg{width:21px;height:21px}}
