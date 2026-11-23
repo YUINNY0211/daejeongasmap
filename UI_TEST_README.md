@@ -1,6 +1,6 @@
-# 대전가스맵 UI 검토 버전
+# 대전가스맵 UI 통합 기록
 
-이 버전은 운영 배포 승인이 없는 **테스트 브랜치 전용** 작업물입니다.
+이 문서는 기존 테스트 단계 기록을 보존합니다. 최신 사용자 지시로 운영 main 통합과 배포가 승인되었으며, 아래의 초기 배포 금지 조건은 당시 테스트 단계의 조건입니다.
 
 - 기준 main: `cd08aee3a9d7ac92805b59d86fd0b18350211014`
 - 작업 브랜치: `test/ui-20261123`
@@ -62,3 +62,15 @@ Node의 모의 DOM/지도 투영 모델로 핀 보정, 전체화면·홈 복귀,
 캐시 헤더 형식 참고: [Cloudflare Pages 공식 문서](https://developers.cloudflare.com/pages/configuration/headers/)
 
 참고: [NAVER Map의 크기·좌표 API](https://navermaps.github.io/maps.js.ncp/docs/naver.maps.Map.html)
+
+## 최종 운영 통합 준비
+
+- 사용자 최신 지시로 main 통합·푸시와 운영 도메인 배포를 승인받았습니다. 기준 테스트 HEAD는 `2b3567e`입니다.
+- 전체 백업: `C:\Users\MUN\AppData\Local\Temp\daejeongasmap-production-integrate-20261123-221432\workspace-before.zip`
+- 넓은 화면은 오른쪽 끝의 290~350px 독립 패널과 넓은 왼쪽 지도로 조정했습니다. 패널은 내용 높이를 사용하고 길찾기·주소 복사는 한 줄입니다. 좁은 화면은 상하 구조와 짧아진 초기 지도, 선택 후 지도/패널 비율을 유지합니다.
+- 말풍선은 부드러운 SVG 경계·흰 테두리·꼬리·그림자와 두 줄 문구로 구성하고 노란 장식은 넣지 않았습니다. 기존 고정 위치와 클릭 동작을 유지합니다.
+- 설치 안내는 운영자 문의 바로 위에 배치하고 안내창 내부의 중복 슬로건만 제거했습니다.
+- Safari 실제 화면 원본 `1.jpg`, `2.jpg`, `3.jpg`를 제공받아 수정 없이 단계별 안내에 연결했습니다. 이로써 이전 단계의 원본 미확인·미연결 사항은 해소되었습니다. 원본 SHA256은 `assets/install-guide/sources.json`에 기록합니다. 화면에 포함된 과거 사이트 미리보기는 원본 그대로입니다.
+- `previewSandbox=false`로 전환했습니다. 운영에서는 실제 Citizen 클라이언트를 사용하며 예시 데이터나 테스트 저장소를 사용하지 않습니다. 운영 API·DB·보안 코드는 수정하지 않았습니다.
+- 배포 전 운영 시민 API 설정 응답은 HTTP 200, enabled=true, localPreview=false였습니다. 실제 제보를 작성하지는 않았습니다.
+- 필수 코드·회귀 검사 94개 및 HTML/CSS·구문 검사가 통과했습니다. 실제 PC 화면과 iPhone·Galaxy 설치/실행·아이콘 갱신은 미검증입니다.

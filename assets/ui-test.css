@@ -4,7 +4,7 @@ main.wrap{container-name:gas-workspace;container-type:inline-size}
 .map-back[hidden]{display:none}
 .map-back>span:first-child{font-size:22px;line-height:1}
 body.map-fullscreen #map-section{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
-body.map-fullscreen #map-section.has-station{grid-template-rows:auto minmax(0,1fr) minmax(0,.95fr)}
+body.map-fullscreen #map-section.has-station{grid-template-rows:auto minmax(0,.85fr) minmax(0,1fr)}
 body.map-fullscreen #map-section>.map-head{grid-column:1;grid-row:1}
 body.map-fullscreen #map{grid-column:1;grid-row:2;min-height:0;height:100%;width:100%}
 body.map-fullscreen #stationPanel{position:relative;inset:auto;grid-column:1;grid-row:3;width:auto;margin:0 8px 8px;max-height:none;min-height:0;overflow:auto}
@@ -12,9 +12,9 @@ body.map-fullscreen #stationPanel .station-detail{flex:none;overflow:visible}
 body.map-fullscreen #stationPanel .station-tools{flex-shrink:0;grid-template-columns:repeat(2,minmax(0,1fr))}
 #stationPanel .station-tools [data-share]{display:none}
 @container gas-workspace (min-width:900px){
- body.map-fullscreen #map-section.has-station{grid-template-columns:minmax(500px,1fr) minmax(300px,36%);grid-template-rows:auto minmax(0,1fr);column-gap:10px}
+ body.map-fullscreen #map-section.has-station{grid-template-columns:minmax(0,1fr) clamp(290px,26vw,350px);grid-template-rows:auto minmax(0,1fr);column-gap:12px}
  body.map-fullscreen #map-section>.map-head{grid-column:1/-1}
- body.map-fullscreen #map-section.has-station #stationPanel{grid-column:2;grid-row:2;margin:0 10px 10px 0;max-height:none;height:auto}
+ body.map-fullscreen #map-section.has-station #stationPanel{grid-column:2;grid-row:2;margin:0;max-height:100%;height:auto;align-self:start}
 }
 @media(max-width:520px){.search-row{flex-wrap:wrap}.map-back{flex:0 0 100%;justify-content:flex-start;margin:0 0 6px}}
 .experience-heart{width:15px;height:15px;flex:none;vertical-align:-3px;margin-right:4px}
@@ -54,3 +54,14 @@ body:not(.map-fullscreen) #mapViewport{height:68vh;min-height:520px;max-height:7
 @container gas-workspace (max-width:899px){body:not(.map-fullscreen) #mapViewport{height:38svh;min-height:250px;max-height:380px}}
 #mapViewport>#map{position:absolute;inset:0;width:100%;height:100%;min-height:0;max-height:none}
 body.map-fullscreen #mapViewport{grid-column:1;grid-row:2;min-height:0;min-width:0;height:100%;width:100%}
+
+/* Smooth feedback balloon; original fixed right/bottom anchors are unchanged. */
+.floating-report{width:84px;height:60px;display:grid;place-items:center;padding:0;border:0;border-radius:24px;background:transparent;box-shadow:none}
+.floating-report:after{content:none}
+.feedback-bubble-shape{position:absolute;left:-2px;top:-2px;width:calc(100% + 4px);height:calc(100% + 14px);overflow:visible;filter:drop-shadow(0 3px 5px #183d2d40);pointer-events:none}
+.feedback-bubble-shape path{fill:var(--g);stroke:white;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.floating-report>span{z-index:1;pointer-events:none}
+#iosInstallTitle+ol>li{display:grid;grid-template-columns:23px minmax(0,1fr)}
+.install-screenshot{grid-column:1/-1;margin:4px 0 8px;max-width:420px}
+.install-screenshot img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:10px}
+#installGuide .install-screenshot figcaption{margin-top:4px;font-size:12px;color:var(--muted)}
