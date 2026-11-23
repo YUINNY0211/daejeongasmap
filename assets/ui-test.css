@@ -12,7 +12,7 @@ body.map-fullscreen #stationPanel .station-detail{flex:none;overflow:visible}
 body.map-fullscreen #stationPanel .station-tools{flex-shrink:0;grid-template-columns:repeat(2,minmax(0,1fr))}
 #stationPanel .station-tools [data-share]{display:none}
 @container gas-workspace (min-width:900px){
- body.map-fullscreen #map-section.has-station{grid-template-columns:minmax(0,1fr) clamp(290px,26vw,350px);grid-template-rows:auto minmax(0,1fr);column-gap:12px}
+ body.map-fullscreen #map-section.has-station{grid-template-columns:minmax(0,1fr) clamp(380px,32vw,480px);grid-template-rows:auto minmax(0,1fr);column-gap:12px}
  body.map-fullscreen #map-section>.map-head{grid-column:1/-1}
  body.map-fullscreen #map-section.has-station #stationPanel{grid-column:2;grid-row:2;margin:0;max-height:100%;height:auto;align-self:start}
 }
@@ -88,11 +88,9 @@ body.map-fullscreen #mapViewport{grid-column:1;grid-row:2;min-height:0;min-width
  #site-guide .guide-link{gap:9px;min-height:64px;padding:10px;font-size:13px;border-radius:15px}
  #site-guide .home-menu-icon{width:36px;height:36px;border-radius:12px}
  #site-guide .home-menu-icon svg{width:23px;height:23px}
- .floating-report{bottom:calc(78px + env(safe-area-inset-bottom,0px))}
- body.map-fullscreen .floating-report{bottom:calc(12px + env(safe-area-inset-bottom,0px))}
  body.map-fullscreen #map-section.has-station{grid-template-rows:auto minmax(0,1fr) auto}
- body.map-fullscreen #map-section{padding-bottom:78px}
- body.map-fullscreen #stationPanel{height:auto;max-height:min(42dvh,320px);align-self:start;padding:8px 10px;margin:0 6px 0}
+ body.map-fullscreen #map-section{padding-bottom:0}
+ body.map-fullscreen #stationPanel{height:auto;max-height:min(46dvh,340px);align-self:end;padding:8px 10px;margin:0 6px 0}
  #stationPanel .compact-head{gap:7px}
  #stationPanel .compact-title h2{margin:0}
  #stationPanel .sheet-identity{margin:4px 0 0;gap:5px 10px}
@@ -104,3 +102,20 @@ body.map-fullscreen #mapViewport{grid-column:1;grid-row:2;min-height:0;min-width
  #stationPanel .route-settings[hidden]{display:none}
 }
 @media(max-width:359px){#site-guide .guide-link{gap:7px;padding:8px;font-size:12px}#site-guide .home-menu-icon{width:30px;height:30px;border-radius:10px}#site-guide .home-menu-icon svg{width:21px;height:21px}}
+
+/* Opaque content surface, independent from map compositing and legacy alpha rules. */
+#stationPanel{display:block}
+#stationPanel .station-surface{display:flow-root;position:relative;z-index:1;background:#fff;opacity:1;isolation:isolate;mix-blend-mode:normal}
+@container gas-workspace (min-width:900px){
+ #stationPanel .compact-title h2{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;line-height:1.4}
+ body.map-fullscreen #stationPanel{padding:14px 16px}
+ #stationPanel .station-tools{gap:10px}
+ #stationPanel .station-tools button{min-height:44px;padding:9px 10px}
+ #stationPanel .station-detail .detail{overflow-wrap:anywhere;line-height:1.7}
+}
+:root{--feedback-safe-top:env(safe-area-inset-top,0px);--feedback-safe-bottom:env(safe-area-inset-bottom,0px);--feedback-safe-left:env(safe-area-inset-left,0px);--feedback-safe-right:env(safe-area-inset-right,0px)}
+body .floating-report[data-auto-positioned]{left:var(--feedback-left);top:var(--feedback-top);right:auto;bottom:auto;transition:left .16s ease,top .16s ease}
+.feedback-bubble-shape path{fill-opacity:.94}
+#informationReportDialog #informationPickStation{width:100%;min-height:44px;margin:8px 0;padding:9px 12px;border:1px solid #80a98e;border-left:4px solid var(--g);border-radius:10px;background:#edf7f0;color:#1e5c3d;font-size:12px;font-weight:800;line-height:1.45;text-align:left;justify-content:flex-start}
+#installGuide[hidden],#installGuide:not([open]){display:none}
+@media(prefers-reduced-motion:reduce){body .floating-report[data-auto-positioned]{transition:none}}

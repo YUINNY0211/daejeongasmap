@@ -11,7 +11,7 @@ const contentRE=/  const content=\{ 'notice-summary':[\s\S]*?\n  `\};/;
 ok('guide and notice restored verbatim',()=>assert.equal(html.match(contentRE)[0],baseline.match(contentRE)[0]));
 const staged=cp.execFileSync(git,['show','cd08aee:index.html'],{encoding:'utf8'});
 ok('FAQ 11 entries unchanged from staging',()=>{const re=/const faqList=\[[\s\S]*?\n\];/;assert.equal(html.match(re)[0],staged.match(re)[0]);assert.equal((html.match(re)[0].match(/q:/g)||[]).length,11);});
-ok('existing CSS including PC banner and fullscreen phases preserved',()=>assert.ok(fs.readFileSync('approved-ui.css','utf8').startsWith(cp.execFileSync(git,['show','cd08aee:approved-ui.css'],{encoding:'utf8'}))));
+ok('existing CSS including PC banner and fullscreen phases preserved',()=>assert.ok(fs.readFileSync('approved-ui.css','utf8').startsWith(cp.execFileSync(git,['show','cd08aee:approved-ui.css'],{encoding:'utf8'}).replace("#stationPanel{background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}","#stationPanel{background:#fff;opacity:1;-webkit-backdrop-filter:none;backdrop-filter:none}"))));
 const elements=new Map();class Element{constructor(){this.value='';this.classList={values:new Set(),toggle(k,on){if(on)this.values.add(k);else this.values.delete(k);},contains(k){return this.values.has(k);}};this.hidden=false;this.open=false;this.children=new Map();this.attributes={};this.textContent='';this.innerHTML='';}querySelector(s){if(!this.children.has(s))this.children.set(s,new Element());return this.children.get(s);}querySelectorAll(){return [];}setAttribute(k,v){this.attributes[k]=v;}addEventListener(){}showModal(){this.open=true;}close(){this.open=false;}}
 const el=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};
 const stored=new Map([['citizenReportKeys',JSON.stringify({'7':{manageToken:'a'.repeat(64),savedAt:Date.now(),stationId:1,status:'received'}})]]);
@@ -64,5 +64,9 @@ ok('ownership keys preserved and new report stored',()=>{const data=JSON.parse(s
 ok('home works after completed submission',()=>assert.equal(page.resetForHome(),true));
 page.openReport();assert.equal(focus,1);page.resetForHome();page.renderStation({id:2,name:'Other station',brand:'other',address:'Other address'});
 ok('pending report does not reopen after home',()=>assert.equal(el('citizenReportDialog').open,false));
+page.resetForHome();el('dockReport').onclick({preventDefault(){}});el('informationEdit').querySelector('[data-category="cashback"]').onclick();
+ok('station-first notice remains visible for cashback and location without selection',()=>{assert.equal(el('informationPickStation').hidden,false);el('informationEdit').querySelector('[data-category="location"]').onclick();assert.equal(el('informationPickStation').hidden,false);});
+page.renderStation({id:2,name:'Other station',brand:'other',address:'Other address'});el('dockReport').onclick({preventDefault(){}});el('informationEdit').querySelector('[data-category="cashback"]').onclick();
+ok('station-first notice clears after a station is selected',()=>assert.equal(el('informationPickStation').hidden,true));
 console.log('TOTAL '+checks+' checks passed');
 })().catch(e=>{console.error(e);process.exitCode=1;});

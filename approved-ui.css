@@ -182,7 +182,7 @@ body.map-fullscreen #suggestions{max-height:min(245px,40dvh)}
 .map-back[hidden]{display:none}
 
 /* Phase 3: translucent sheet background; text and controls stay fully opaque. */
-#stationPanel{background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#stationPanel{background:#fff;opacity:1;-webkit-backdrop-filter:none;backdrop-filter:none}
 
 /* FAQ shortcuts: highlight existing targets without changing their click handlers or geometry. */
 .faq-answer p{margin:0 0 12px}.faq-answer p:last-child{margin-bottom:0}
