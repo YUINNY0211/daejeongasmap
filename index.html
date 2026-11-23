@@ -319,7 +319,7 @@ const faqList=[
   },
   {
     q:`Q6. 실시간 유가(휘발유·경유 가격) 정보도 확인할 수 있나요?`,
-    a:`본 사이트는 주유소 위치 및 온통대전 캐시백 적용 여부 확인을 중심으로 운영합니다.<br><br>유가 비교가 필요한 경우 한국석유공사 <strong>오피넷(Opinet)</strong>에서 최신 유가 정보를 확인할 수 있습니다. 화면 하단의 '오피넷 이동'을 선택하면 해당 사이트로 연결됩니다.`
+    a:`본 사이트는 주유소 위치 및 온통대전 캐시백 적용 여부 확인을 중심으로 운영합니다.<br><br>유가 비교가 필요한 경우 한국석유공사 <strong>오피넷(Opinet)</strong>에서 최신 유가 정보를 확인할 수 있습니다. 화면 하단의 '오피넷 이동'을 선택하면 해당 사이트로 연결됩니다.<br><br><a href="#" data-faq-action="opinet">오피넷 바로가기 ↗</a>`
   },
   {
     q:`Q7. 지도에서 주유소 위치가 실제와 조금 다르게 표시됩니다.`,
@@ -339,7 +339,7 @@ const faqList=[
   },
   {
     q:`Q11. 시민 제보를 남기면 바로 반영되나요?`,
-    a:`시민들이 공유한 캐시백 적용·미적용 경험은 별도의 사전 검토 없이 사이트에 즉시 공개됩니다.<br><br>반면 '의견 보내기'로 접수된 주유소 정보 수정 요청은 운영자만 비공개로 확인하며, 검토 후 반영 여부를 결정합니다.<br><br>모든 의견의 즉각적인 확인이나 반영을 보장하지 않습니다.`
+    a:`시민들이 공유한 캐시백 적용·미적용 경험은 별도의 사전 검토 없이 사이트에 즉시 공개됩니다.<br><br>반면 '의견 보내기'로 접수된 주유소 정보 수정 요청은 운영자만 비공개로 확인하며, 검토 후 반영 여부를 결정합니다.<br><br>모든 의견의 즉각적인 확인이나 반영을 보장하지 않습니다.<br><br><a href="#" data-faq-action="feedback">의견 보내기 ↗</a>`
   }
 ];
 
@@ -371,6 +371,36 @@ function renderFaqMain(){
       }
     });
   });
+
+  box.querySelectorAll('[data-faq-action]').forEach(link=>{
+    link.addEventListener('click',e=>{
+      e.preventDefault();
+      const action=link.dataset.faqAction;
+      closeModal();
+
+      if(action==='opinet'){
+        const target=document.querySelector('.opinet-card');
+        if(!target)return;
+        target.scrollIntoView({behavior:'smooth',block:'center'});
+        target.classList.remove('faq-highlight');
+        void target.offsetWidth;
+        target.classList.add('faq-highlight');
+        setTimeout(()=>target.classList.remove('faq-highlight'),2200);
+      }
+
+      if(action==='feedback'){
+        const target=$('dockReport');
+        $('map-section').scrollIntoView({behavior:'smooth',block:'start'});
+        target.classList.remove('faq-highlight');
+        void target.offsetWidth;
+        target.classList.add('faq-highlight');
+        setTimeout(()=>target.classList.remove('faq-highlight'),2200);
+      }
+    });
+  });
+
+  setupModalSwipe(box);
+}
 
   setupModalSwipe(box);
 }
