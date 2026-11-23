@@ -208,3 +208,8 @@ body.map-fullscreen #suggestions{max-height:min(245px,40dvh)}
 .approved-source-row{margin-top:7px;padding:7px 8px}
 .approved-disclaimer{margin-top:6px;line-height:1.5}
 }
+
+/* 정보 표시 영역: 구분선을 영역 가로 정중앙(50%)에 두고, 좌우 정보를 각 절반의 가운데에 정렬합니다. 아이콘·색상·글꼴·테두리·배경·높이는 그대로입니다. */
+.approved-source-row{display:grid;grid-template-columns:1fr 1fr;gap:0;padding-left:0;padding-right:0}
+.approved-source-row>span,.approved-source-row>span+span{justify-content:center;padding-left:18px;padding-right:18px;min-width:0}
+@media(max-width:767px){.approved-source-row>span,.approved-source-row>span+span{padding-left:7px;padding-right:7px}}
