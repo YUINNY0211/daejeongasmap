@@ -1,0 +1,36 @@
+/* Preview layout additions. Approved banner, palette, dock and PWA assets stay intact. */
+main.wrap{container-name:gas-workspace;container-type:inline-size}
+@container gas-workspace (max-width:899px){body:not(.map-fullscreen) #map{height:38svh;min-height:250px;max-height:380px}}
+.map-back{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:auto;min-height:44px;padding:7px 12px;font-size:14px;font-weight:800;color:var(--g);white-space:nowrap}
+.map-back[hidden]{display:none}
+.map-back>span:first-child{font-size:22px;line-height:1}
+body.map-fullscreen #map-section{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+body.map-fullscreen #map-section.has-station{grid-template-rows:auto minmax(0,1fr) minmax(0,.95fr)}
+body.map-fullscreen #map-section>.map-head{grid-column:1;grid-row:1}
+body.map-fullscreen #map{grid-column:1;grid-row:2;min-height:0;height:100%;width:100%}
+body.map-fullscreen #stationPanel{position:relative;inset:auto;grid-column:1;grid-row:3;width:auto;margin:0 8px 8px;max-height:none;min-height:0;overflow:auto}
+body.map-fullscreen #stationPanel .station-detail{flex:none;overflow:visible}
+body.map-fullscreen #stationPanel .station-tools{flex-shrink:0;grid-template-columns:repeat(2,minmax(0,1fr))}
+#stationPanel .station-tools [data-share]{display:none}
+@container gas-workspace (min-width:900px){
+ body.map-fullscreen #map-section.has-station{grid-template-columns:minmax(500px,1fr) minmax(300px,36%);grid-template-rows:auto minmax(0,1fr);column-gap:10px}
+ body.map-fullscreen #map-section>.map-head{grid-column:1/-1}
+ body.map-fullscreen #map-section.has-station #stationPanel{grid-column:2;grid-row:2;margin:0 10px 10px 0;max-height:none;height:auto}
+}
+@media(max-width:520px){.search-row{flex-wrap:wrap}.map-back{flex:0 0 100%;justify-content:flex-start;margin:0 0 6px}}
+.experience-heart{width:15px;height:15px;flex:none;vertical-align:-3px;margin-right:4px}
+.experience-heart.yes{color:var(--g)}.experience-heart.no{color:var(--unchecked)}
+.feedback-row .report-status{display:inline-flex;align-items:center;gap:0}
+#allRefresh svg{width:25px;height:25px}
+#allRefresh{min-width:38px;min-height:38px}
+.install-prompt{display:flex;align-items:flex-start;gap:10px;padding:12px}
+.install-prompt[hidden],#installNative[hidden]{display:none}
+.install-prompt>img{flex:none;border-radius:8px}
+.install-prompt>div{flex:1;min-width:0}
+.install-prompt strong{font-size:13px}
+.install-prompt p{margin:4px 0;font-size:12px;line-height:1.5;color:var(--muted)}
+.install-prompt [data-install-guide]{padding:3px 0;min-height:32px;border:0;background:transparent;color:var(--g);font-size:12px;font-weight:750;text-decoration:underline;text-underline-offset:3px}
+#installGuide p,#installGuide li{font-size:14px;line-height:1.7}
+#installGuide ul{padding-left:20px}
+#uiPreviewNotice{padding:9px 14px;background:#f3faf6;border-bottom:1px solid #dcebe2;color:#355b46;font-size:12px;line-height:1.5;text-align:center}
+body.map-fullscreen>#uiPreviewNotice{display:none}
