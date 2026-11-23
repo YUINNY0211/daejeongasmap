@@ -213,3 +213,22 @@ body.map-fullscreen #suggestions{max-height:min(245px,40dvh)}
 .approved-source-row{display:grid;grid-template-columns:1fr 1fr;gap:0;padding-left:0;padding-right:0}
 .approved-source-row>span,.approved-source-row>span+span{justify-content:center;padding-left:18px;padding-right:18px;min-width:0}
 @media(max-width:767px){.approved-source-row>span,.approved-source-row>span+span{padding-left:7px;padding-right:7px}}
+
+/* Feedback participation controls: keep existing data, palette and dialog layouts. */
+html.map-fullscreen{overflow:hidden;overscroll-behavior:none}
+body.map-fullscreen>main.wrap{height:var(--map-viewport-height,100vh);height:var(--map-viewport-height,100dvh);max-width:none;display:grid;grid-template-rows:auto minmax(0,1fr)}
+body.map-fullscreen #map-section{min-width:0;height:100%;overflow:hidden}
+body.map-fullscreen #map{flex:1 1 0%;height:0;min-height:0;max-height:none;width:100%}
+.experience-pagination{gap:10px;padding-top:5px}
+.experience-pagination .more{display:grid;place-items:center;width:44px;min-width:44px;height:44px;min-height:44px;padding:9px;border:1px solid #cce0d2;border-radius:50%;background:#f3faf6;color:var(--g);line-height:1;touch-action:manipulation}
+.experience-pagination .more[hidden]{display:none}
+.experience-pagination .more svg{width:22px;height:22px}
+.experience-pagination .more:hover{background:#e5f4ec}
+#allRefresh{display:grid;place-items:center;min-width:36px;min-height:36px;padding:7px}
+#allRefresh svg{width:23px;height:23px;transform:none}
+.floating-report{width:82px;height:60px;padding:6px 7px 8px;border:3px solid white;border-radius:46% 46% 43% 43%;background:var(--g);color:white;box-shadow:0 3px 12px #183d2d40;isolation:isolate}
+.floating-report:after{content:"";position:absolute;z-index:-1;right:12px;bottom:-11px;width:19px;height:19px;background:var(--g);border-right:3px solid white;border-bottom:3px solid white;border-radius:0 0 8px 0;transform:skewY(-28deg) rotate(20deg)}
+.floating-report>span{position:relative;display:block;font-size:17px;line-height:1.03;font-weight:850;letter-spacing:-.045em;white-space:nowrap}
+.feedback-toast{position:fixed;z-index:110;left:50%;bottom:165px;transform:translateX(-50%);width:max-content;max-width:calc(100% - 32px);padding:12px 17px;border-radius:12px;background:#203e2f;color:white;font-size:14px;line-height:1.5;box-shadow:0 4px 18px #183d2d30;pointer-events:none;text-align:center}
+.feedback-toast[hidden]{display:none}
+@media(max-width:767px){.opinet-card.faq-shortcut-highlight,#dockReport.faq-shortcut-highlight{outline:2px solid #d4b74c;outline-offset:-2px}}
