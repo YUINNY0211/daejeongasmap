@@ -112,5 +112,17 @@ window.createCitizenPage=function(bridge){
  $('checkedDate').textContent='최종 확인일: '+cfg.checkedDate;
  Citizen.config().catch(()=>{});
  refresh();
- return {renderStation,refresh,openReport,close(){++version;selected=null;stationRows=[];$('stationPanel').hidden=true;},isSelected:()=>!!selected};
+ function resetForHome(){
+  // Keep drafts and ownership keys; never interrupt an in-flight submission.
+  if(busy)return false;
+  saveInformationDraft();cancelRouteAttempt();++version;
+  pendingOpen=null;pendingInformation=null;selected=null;
+  stationRows=[];stationCursor=null;expanded=false;feedbackExpanded=true;
+  routeSelection=null;routeStation=null;experienceChoice=null;reviewStationId=null;
+  resetInformationReview();renderExperienceChoice();
+  for(const id of ['stationRouteDialog','citizenReportDialog','informationReportDialog'])if($(id).open)$(id).close();
+  $('stationPanel').hidden=true;
+  return true;
+ }
+ return {renderStation,refresh,openReport,resetForHome,close(){++version;selected=null;stationRows=[];$('stationPanel').hidden=true;},isSelected:()=>!!selected};
 };

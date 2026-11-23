@@ -166,23 +166,45 @@
 #citizenReportDialog .status{color:#26332D}
 #citizenReportDialog .manage-row button{color:#26332D;border-color:#A3B2A9}
 #citizenReportDialog .station-experience-pagination .more{color:#287344}
-/* FAQ direct navigation highlight */
-.faq-highlight{
-  animation:faqHighlight 2.2s ease-in-out;
-}
 
-@keyframes faqHighlight{
-  0%,100%{
-    box-shadow:0 0 0 0 rgba(22,150,96,0);
-  }
-  25%,65%{
-    box-shadow:0 0 0 5px rgba(22,150,96,.22),
-      0 0 22px rgba(22,150,96,.32);
-    background-image:linear-gradient(
-      120deg,
-      rgba(220,248,231,.95),
-      rgba(190,235,211,.75),
-      rgba(220,248,231,.95)
-    );
-  }
+/* Map fullscreen, phase 1: reuse the existing search, map and citizen UI. */
+body.map-fullscreen{overflow:hidden;padding-bottom:0}
+body.map-fullscreen>main.wrap{position:fixed;inset:0;z-index:50;width:100%;height:100vh;height:100dvh;margin:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
+body.map-fullscreen>header,body.map-fullscreen>#siteTestNotice,body.map-fullscreen>.dock,body.map-fullscreen>main.wrap>:not(#search-section):not(#map-section){display:none}
+body.map-fullscreen #search-section{position:relative;z-index:30;flex:none;margin:0;border-radius:0}
+body.map-fullscreen #map-section{display:flex;flex-direction:column;flex:1;min-height:0;margin:0;padding:0;border:0;border-radius:0}
+body.map-fullscreen #map-section>.map-head{flex:none;padding:8px 10px}
+body.map-fullscreen #map{flex:1;height:auto;min-height:0;max-height:none}
+body.map-fullscreen #suggestions{max-height:min(245px,40dvh)}
+
+/* Phase 2: home return without replacing the search input or map instance. */
+.map-back{flex:none;width:40px;height:45px;margin-right:6px;padding:0;border:1px solid #dbe8e0;border-radius:13px;background:white;color:var(--g);font-size:24px}
+.map-back[hidden]{display:none}
+
+/* Phase 3: translucent sheet background; text and controls stay fully opaque. */
+#stationPanel{background:rgba(255,255,255,.86);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+
+/* FAQ shortcuts: highlight existing targets without changing their click handlers or geometry. */
+.faq-answer p{margin:0 0 12px}.faq-answer p:last-child{margin-bottom:0}
+.faq-answer ol{margin:0 0 12px;padding-left:24px}
+.faq-answer a{color:#087f53;text-decoration:underline;text-underline-offset:3px}
+.opinet-card.faq-shortcut-highlight,#dockReport.faq-shortcut-highlight{background:linear-gradient(115deg,#fff2bb,#e2f6e8 55%,#fff);background-size:200% 100%;border-radius:10px;animation:faqShortcutAttention 1s ease-in-out 4;box-shadow:inset 0 0 0 2px #d4b74c;color:#1b543d}
+@keyframes faqShortcutAttention{0%,100%{background-position:0 50%}50%{background-position:100% 50%;box-shadow:inset 0 0 0 3px #d4b74c,0 0 12px #f5dc7a99}}
+@media(prefers-reduced-motion:reduce){.opinet-card.faq-shortcut-highlight,#dockReport.faq-shortcut-highlight{animation:faqShortcutStill 4s linear}}
+@keyframes faqShortcutStill{from,to{background-position:50% 50%}}
+
+/* 상단 배너 보정(1단계): 구분선을 PC 배너 가로 정중앙(50%)에 두고, 배너 세로 높이를 조금 줄입니다. 색상·아이콘·문구는 그대로입니다. */
+@media(min-width:768px){
+.hero.approved-banner{padding-top:10px}
+.approved-banner-art{aspect-ratio:1485/436}
+.approved-banner-art img{top:calc(-126 / 436 * 100%)}
+.approved-source-row{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:10px 0;margin-top:10px}
+.approved-source-row>span{justify-content:center;padding:0 18px}
+.approved-source-row svg{width:26px;height:26px}
+.approved-disclaimer{margin:8px 0 3px}
+}
+@media(max-width:767px){
+.hero.approved-banner{padding-top:6px}
+.approved-source-row{margin-top:7px;padding:7px 8px}
+.approved-disclaimer{margin-top:6px;line-height:1.5}
 }
