@@ -310,7 +310,9 @@ const faqList=[
 
 function renderFaqMain(){
   const box=$('modalContent');
-  const pages=[faqList.slice(0,5),faqList.slice(5,10)];
+  const pages=[faqList.slice(0,4),
+    faqList.slice(4,8),
+    faqList.slice(8,11)];
   box.innerHTML='<p class="swipe-hint">↔ 옆으로 넘겨서 확인하세요</p>'
     +'<div class="swipe-track faq-track">'
     +pages.map((page,pageIndex)=>'<div class="swipe-slide">'
