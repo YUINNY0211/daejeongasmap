@@ -45,4 +45,20 @@ Node의 모의 DOM/지도 투영 모델로 핀 보정, 전체화면·홈 복귀,
 
 운영자가 Preview URL에서 승인한 뒤에만 main 반영·운영 배포를 별도 진행합니다. 승격 전에는 테스트 sandbox 설정과 예시 데이터 진입을 다시 검토해야 합니다.
 
+## 3ac4b6d 이후 추가 수정
+
+- 시작 HEAD `3ac4b6d`, staging·미커밋 변경 없음 확인 후 전체 백업을 추가했습니다.
+- 백업: `C:\Users\MUN\AppData\Local\Temp\daejeongasmap-ui-revision-20261123-212805\workspace-before.zip`
+- 백업 SHA256: `2D84A170902D2307A823E9C0F794E14A3845147E033C175302AECF3C73A65CFD`
+- 상세 패널 상단 펼치기 버튼과 핸들러를 제거했습니다. 전체 상세정보·X·홈 복귀는 유지합니다.
+- 반응형 `mapViewport`와 SDK 캔버스를 분리해 SDK의 픽셀 크기가 외곽 레이아웃 측정을 고정하지 않도록 했습니다. 보정 알고리즘과 회전·확대축소 대응 코드는 유지합니다.
+- ‘기타’ 유형에서만 전체 주유소 정보 카드와 확인 화면의 중복 주유소 정보를 숨깁니다. 선택된 stationId와 전송 형식은 유지합니다.
+- 웹사이트 이름은 `대전 주유소 지도`, 앱 short_name과 Apple 제목은 `대전 주유소`, 운영 브랜드 메타 정보는 `대전가스맵 (Daejeon Gas Map)`으로 적용했습니다. 정보 페이지는 사이트 명칭만 바꿨습니다.
+- 공식 아이콘 원본은 `assets/pwa/map-original.png`에 바이트 그대로 보존합니다. 원본 SHA256은 `2a989898e9130a34a6675263c2edd507f00afb09cf7dc84db96a146233e90989`입니다. 일반 192/512, Apple 180, maskable 512는 이 원본의 비례 축소와 여백 조정만 적용했습니다.
+- 이전 HTML·manifest는 단색 주유기 아이콘 경로를 사용했습니다. 새 아이콘은 별도 파일명으로 연결하고 manifest URL에 내용 해시를 추가했습니다. `_headers`는 manifest와 기본 Apple 아이콘에만 재검증 캐시 정책을 적용합니다. 기존 설치본의 OS 아이콘 갱신은 미검증입니다.
+- 전체 메뉴는 `홈 화면 설치 안내`로 표시합니다. iPhone 5단계·Galaxy 3단계 텍스트와 SVG 안내를 넣었습니다. **사용자가 언급한 실제 Safari 화면 3장의 파일 위치가 확인되지 않아 해당 이미지를 활용한 안내는 아직 미완료입니다.** 실제 화면을 임의 제작하거나 완료로 표시하지 않았습니다.
+- 앱 내 브라우저 확인은 `The browser access host is unavailable`로 막혔습니다. PC 실제 화면·핀 표시와 iPhone/Galaxy 실제 기기 검증은 통과로 간주하지 않습니다.
+
+캐시 헤더 형식 참고: [Cloudflare Pages 공식 문서](https://developers.cloudflare.com/pages/configuration/headers/)
+
 참고: [NAVER Map의 크기·좌표 API](https://navermaps.github.io/maps.js.ncp/docs/naver.maps.Map.html)

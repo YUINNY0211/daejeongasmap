@@ -1,0 +1,5 @@
+/manifest.webmanifest
+  Cache-Control: public, max-age=0, must-revalidate
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=0, must-revalidate

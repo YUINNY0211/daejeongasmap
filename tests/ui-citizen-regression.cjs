@@ -12,7 +12,7 @@ ok('guide and notice restored verbatim',()=>assert.equal(html.match(contentRE)[0
 const staged=cp.execFileSync(git,['show','cd08aee:index.html'],{encoding:'utf8'});
 ok('FAQ 11 entries unchanged from staging',()=>{const re=/const faqList=\[[\s\S]*?\n\];/;assert.equal(html.match(re)[0],staged.match(re)[0]);assert.equal((html.match(re)[0].match(/q:/g)||[]).length,11);});
 ok('existing CSS including PC banner and fullscreen phases preserved',()=>assert.ok(fs.readFileSync('approved-ui.css','utf8').startsWith(cp.execFileSync(git,['show','cd08aee:approved-ui.css'],{encoding:'utf8'}))));
-const elements=new Map();class Element{constructor(){this.value='';this.hidden=false;this.open=false;this.children=new Map();this.attributes={};this.textContent='';this.innerHTML='';}querySelector(s){if(!this.children.has(s))this.children.set(s,new Element());return this.children.get(s);}querySelectorAll(){return [];}setAttribute(k,v){this.attributes[k]=v;}addEventListener(){}showModal(){this.open=true;}close(){this.open=false;}}
+const elements=new Map();class Element{constructor(){this.value='';this.classList={values:new Set(),toggle(k,on){if(on)this.values.add(k);else this.values.delete(k);},contains(k){return this.values.has(k);}};this.hidden=false;this.open=false;this.children=new Map();this.attributes={};this.textContent='';this.innerHTML='';}querySelector(s){if(!this.children.has(s))this.children.set(s,new Element());return this.children.get(s);}querySelectorAll(){return [];}setAttribute(k,v){this.attributes[k]=v;}addEventListener(){}showModal(){this.open=true;}close(){this.open=false;}}
 const el=id=>{if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};
 const stored=new Map([['citizenReportKeys',JSON.stringify({'7':{manageToken:'a'.repeat(64),savedAt:Date.now(),stationId:1,status:'received'}})]]);
 let resolveSend,sendArgs,calls=0;const citizen={time:()=>'',config:async()=>({}),list:async({stationId,limit=5,before})=>{const start=Number(before)||0;return {items:Array.from({length:Math.min(limit,20-start)},(_,i)=>({id:start+i+1,stationName:'Station '+(stationId||1),status:'received',reportedAt:Date.now()})),nextCursor:start+limit<20?String(start+limit):null};},send:(kind,data)=>{sendArgs={kind,data};calls++;return new Promise(r=>resolveSend=r);}};
@@ -31,7 +31,7 @@ ok('station selection opens expanded existing details with phone and unchanged t
 ok('pending floating feedback connects to selected station',()=>{assert.equal(el('citizenReportDialog').open,true);assert.equal(el('reportStationName').textContent,'Test station');assert.equal(el('feedbackToast').hidden,true);});
 el('citizenReportDialog').close();
 ok('per-station experience UI is hidden by default and recoverable by feature flag',()=>{assert.ok(!el('stationPanel').innerHTML.includes('class="station-experience"'));context.window.GAS_UI.stationFeedbackEnabled=true;page.renderStation({id:1,name:'Test station',brand:'other',address:'Test address'});assert.match(el('stationPanel').innerHTML,/class="station-experience"/);context.window.GAS_UI.stationFeedbackEnabled=false;page.renderStation({id:1,name:'Test station',brand:'other',address:'Test address'});assert.ok(!el('stationPanel').innerHTML.includes('class="station-experience"'));});
-ok('detail collapse and expand still work',()=>{el('stationPanel').querySelector('[data-expand]').onclick();assert.ok(!el('stationPanel').innerHTML.includes('class="station-detail"'));el('stationPanel').querySelector('[data-expand]').onclick();assert.match(el('stationPanel').innerHTML,/class="station-detail"/);});
+ok('detail expansion arrow removed while full details and X close remain',()=>{assert.ok(!el('stationPanel').innerHTML.includes('data-expand'));assert.match(el('stationPanel').innerHTML,/class="station-detail"/);assert.match(el('stationPanel').innerHTML,/data-close-station/);});
 ok('initial global experience list remains five rows',()=>assert.equal((el('allFeedback').innerHTML.match(/class="feedback-row"/g)||[]).length,5));
 await el('allMore').onclick();await el('allMore').onclick();
 ok('down arrow keeps +5 pagination and fifteen-row cap',()=>{assert.equal((el('allFeedback').innerHTML.match(/class="feedback-row"/g)||[]).length,15);assert.equal(el('allMore').hidden,true);});
@@ -40,6 +40,15 @@ ok('up arrow returns to five rows',()=>assert.equal((el('allFeedback').innerHTML
 await el('allRefresh').onclick();
 ok('refresh still reloads the existing list',()=>assert.equal((el('allFeedback').innerHTML.match(/class="feedback-row"/g)||[]).length,5));
 
+el('dockReport').onclick({preventDefault(){}});
+el('informationEdit').querySelector('[data-category="other"]').onclick();
+ok('other type hides the complete station identity card only',()=>{assert.equal(el('informationStationCard').hidden,true);assert.equal(el('informationReviewStation').hidden,true);assert.equal(el('informationReportDialog').classList.contains('other-information'),true);});
+el('informationOptions').querySelector('[data-information-item="other"]').onchange();el('informationReview').onclick();
+ok('other type review remains usable in compact mode',()=>{assert.equal(el('informationConfirm').hidden,false);assert.equal(el('informationEdit').hidden,true);});
+el('suggestionMessage').value='Other information test';el('suggestionMessage').oninput();const otherSend=el('suggestionForm').onsubmit({preventDefault(){}});
+ok('other suggestion keeps selected station and existing send payload',()=>{assert.equal(sendArgs.kind,'suggestions');assert.equal(sendArgs.data.stationId,1);assert.equal(sendArgs.data.category,'other');assert.equal(sendArgs.data.item,'other');});resolveSend({ok:true});await otherSend;
+el('informationEdit').querySelector('[data-category="cashback"]').onclick();
+ok('switching away from other restores standard station information',()=>{assert.equal(el('informationStationCard').hidden,false);assert.equal(el('informationReviewStation').hidden,false);assert.equal(el('informationReportDialog').classList.contains('other-information'),false);});
 el('dockReport').onclick({preventDefault(){}});el('suggestionMessage').value='preserve my draft';
 ok('information report opens',()=>assert.equal(el('informationReportDialog').open,true));
 ok('home return closes dialogs and clears selection',()=>{assert.equal(page.resetForHome(),true);assert.equal(page.isSelected(),false);assert.equal(el('informationReportDialog').open,false);assert.equal(el('stationPanel').hidden,true);});
