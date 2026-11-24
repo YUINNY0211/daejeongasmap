@@ -17,3 +17,5 @@
 .page-footer p{margin:0}
 .page-content h2:not(:has(.section-icon))::before,.page-content h3:not(:has(.section-icon))::before{content:'ⓘ';display:inline-block;margin-right:7px;color:#176b45;font-size:.8em;font-weight:700}
 .info-page a[href^='https://daejeongasmap.kr/']::before,.info-page a[href^='https://daejeongasmap.kr/']::after{content:none!important}
+
+.page-header .article-heading{background:#edf7f0;border:1px solid #e0ece4;border-radius:16px;padding:14px 18px;margin-top:12px}.page-header .article-heading p{margin:0 0 5px;font-size:14px;color:#526b59}.page-header .article-heading h1{margin:0;color:#174c34;font-size:clamp(22px,4vw,28px);font-weight:750;line-height:1.4}.page-header{margin-bottom:10px}.page-content{margin-top:10px;color:#3e4943}.page-navigation{justify-content:center;text-align:center}.page-navigation a{text-decoration:none}.page-navigation a::before,.page-navigation a::after{content:none!important}.operating-note{background:#eff8f2;border:1px solid #e0ece4;border-radius:14px;padding:16px;margin-top:16px}.operating-note h2{margin-top:0}.operating-note p:last-child{margin-bottom:0}
