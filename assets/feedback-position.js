@@ -24,7 +24,7 @@ window.computeFeedbackPosition=function({viewport,button,safe={},mapRect=null,pa
  function update(){
   frame=null;const v=window.visualViewport,root=getComputedStyle(document.documentElement);
   const inset=edge=>parseFloat(root.getPropertyValue('--feedback-safe-'+edge))||0;
-  const panelAnchor=!!rect(panel)&&window.innerWidth<600;button.classList.toggle('is-station-detail',!!rect(panel));
+  const panelAnchor=!!rect(panel);button.classList.toggle('is-station-detail',!!rect(panel));
   const contentRects=panelAnchor?[...panel.querySelectorAll('.compact-head,.sheet-identity,.station-tools,.station-tags>.station-badge,.station-detail .detail,.route-settings')].map(rect).filter(Boolean):[];
   const position=window.computeFeedbackPosition({panelAnchor,contentRects,contactRect:panelAnchor?rect(panel.querySelector('.station-detail')):null,viewport:{left:v?.offsetLeft||0,top:v?.offsetTop||0,width:v?.width||window.innerWidth,height:v?.height||window.innerHeight},button:button.getBoundingClientRect(),safe:{left:inset('left'),right:inset('right'),top:inset('top'),bottom:inset('bottom')},mapRect:rect(map),panelRect:rect(panel),dockRect:rect(dock),searchRect:rect(search)});
   button.style.setProperty('--feedback-left',position.left+'px');button.style.setProperty('--feedback-top',position.top+'px');button.dataset.autoPositioned='true';

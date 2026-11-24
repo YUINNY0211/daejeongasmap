@@ -16,13 +16,6 @@ body #stationPanel .station-tools{order:2;margin:0;grid-template-columns:repeat(
 #informationConfirm #informationSubmit{margin-bottom:0}
 .guide-step-icon{font-size:24px;line-height:1}
 @media(max-width:599px){
- .searchbox .search-row{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;gap:0;flex-wrap:nowrap;border:1px solid #dbe8e0;border-radius:13px;background:#fff;overflow:visible}
- .search-row .map-back{display:flex;justify-content:center;min-width:44px;min-height:44px;height:44px;width:44px;margin:0;padding:0;border:0;border-radius:12px 0 0 12px;background:#f2f7f4}
- .search-row .map-back[hidden]{display:none}
- .search-row .map-back>span:last-child{display:none}
- .search-row:has(.map-back[hidden]){grid-template-columns:minmax(0,1fr) 44px}
- .search-row input{height:44px;min-width:0;width:100%;padding:0 8px;border:0;border-radius:0;background:transparent;font-size:14px}
- .search-row .search-go{position:static;height:44px;width:44px;border-radius:0 12px 12px 0;background:white;color:var(--g)}
  body #stationPanel .station-detail{min-height:64px;padding-right:78px}
  body #stationPanel .station-detail .detail{padding-right:0}
  .guide-step-icon{font-size:22px}
@@ -35,4 +28,27 @@ body #stationPanel .station-tools{order:2;margin:0;grid-template-columns:repeat(
 }
 @media(max-width:767px){
  #informationReportDialog:has(#informationConfirm:not([hidden])){inset:0;width:calc(100% - 24px);max-width:560px;height:fit-content;max-height:90dvh;margin:auto;border:1px solid #d9e9df;border-radius:20px;padding:14px}
+}
+
+/* Shared search and selected-station contact anchor on every screen width. */
+.searchbox .search-row{display:grid;grid-template-columns:44px auto minmax(0,1fr) 44px;align-items:center;gap:0;flex-wrap:nowrap;border:1px solid #dbe8e0;border-radius:13px;background:#fff;overflow:visible}
+.search-row .map-back{display:flex;justify-content:center;min-width:44px;min-height:44px;height:44px;width:44px;margin:0;padding:0;border:0;border-radius:12px 0 0 12px;background:#f2f7f4}
+.search-row .map-home-text{position:relative;display:flex;align-items:center;white-space:nowrap;height:44px;min-height:44px;padding:0 10px;border:0;background:transparent;color:var(--g);font:inherit;font-size:14px;font-weight:750}
+.search-row .map-home-text::after{content:'';position:absolute;right:0;top:12px;bottom:12px;width:1px;background:#dbe8e0}
+.search-row input{height:44px;min-width:0;width:100%;padding:0 8px;border:0;border-radius:0;background:transparent}
+.search-row .search-go{position:static;height:44px;width:44px;border-radius:0 12px 12px 0}
+body #stationPanel .station-detail{min-height:64px;padding-right:78px}
+body #stationPanel .station-detail .detail{padding-right:0}
+@media(max-width:599px){
+ .search-row .map-home-text{padding:0 8px;font-size:12px}
+ .search-row input{font-size:14px}
+ .search-row .search-go{background:white;color:var(--g)}
+ body #stationPanel .station-surface{gap:6px}
+ body #stationPanel .station-identity-group{position:relative;min-height:0;padding:6px 8px}
+ body #stationPanel .compact-head{min-height:0;gap:0}
+ body #stationPanel .compact-title{padding-right:44px}
+ body #stationPanel .compact-title h2{margin:0}
+ body #stationPanel .sheet-controls{position:absolute;top:4px;right:4px}
+ body #stationPanel .sheet-identity{min-height:0;margin:2px 0 0;padding:0 44px 0 0;gap:2px 6px}
+ body #stationPanel .station-tags{min-height:0;margin:3px 0 0;gap:3px}
 }

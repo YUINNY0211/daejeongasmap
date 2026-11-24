@@ -46,9 +46,9 @@ main{padding-top:13px}.card{background:white;border:1px solid #e5f0e9;border-rad
 <link rel="icon" type="image/png" sizes="192x192" href="/assets/pwa/map-2a989898e913-192.png">
 <link rel="stylesheet" href="/assets/pwa/standalone.css?v=1">
 <link rel="stylesheet" href="/assets/ui-test.css?v=ba1f1303aa0e">
-<script defer src="/assets/feedback-position.js?v=4f9986c6f863"></script>
+<script defer src="/assets/feedback-position.js?v=08ed431d4a08"></script>
 <script defer src="/assets/install-guide.js?v=356a564ecada"></script>
-<link rel="stylesheet" href="/assets/open-ui.css?v=e3256df24784">
+<link rel="stylesheet" href="/assets/open-ui.css?v=9584cff3bfbd">
 </head>
 <body>
 
@@ -58,7 +58,7 @@ main{padding-top:13px}.card{background:white;border:1px solid #e5f0e9;border-rad
 
 
 
-<section id="search-section" class="card searchbox"><div class="search-row"><button aria-label="처음 화면으로" id="mapBack" class="map-back" type="button" aria-label="처음 화면으로" hidden><span aria-hidden="true">←</span><span>처음 화면으로</span></button><input id="searchInput" type="search" autocomplete="off" placeholder="주유소명 또는 주소 검색" aria-label="주유소명 또는 주소 검색"><button id="searchGo" class="search-go" aria-label="검색">⌕</button><div id="suggestions" class="suggestions" hidden></div></div><div id="searchStatus" class="status" aria-live="polite"></div><div id="districts" class="districts"></div><div class="summary"><label class="filter"><input id="cashbackOnly" type="checkbox" checked> 캐시백 가능만 보기</label><span id="filterCount" class="counter"></span></div></section>
+<section id="search-section" class="card searchbox"><div class="search-row"><button id="mapBack" class="map-back" type="button" aria-label="처음 화면으로"><span aria-hidden="true">←</span></button><button id="mapHomeText" class="map-home-text" type="button">처음 화면으로</button><input id="searchInput" type="search" autocomplete="off" placeholder="주유소명 또는 주소 검색" aria-label="주유소명 또는 주소 검색"><button id="searchGo" class="search-go" aria-label="검색">⌕</button><div id="suggestions" class="suggestions" hidden></div></div><div id="searchStatus" class="status" aria-live="polite"></div><div id="districts" class="districts"></div><div class="summary"><label class="filter"><input id="cashbackOnly" type="checkbox" checked> 캐시백 가능만 보기</label><span id="filterCount" class="counter"></span></div></section>
 <aside id="installPrompt" class="card install-prompt" hidden><img src="/assets/pwa/map-2a989898e913-192.png" width="32" height="32" alt=""><div><p>홈 화면에 추가하면 다음 방문부터 앱처럼 편리하게 이용할 수 있어요.</p><button type="button" data-install-guide>홈 화면에 추가하는 방법</button></div><button id="installDismiss" type="button" class="icon-button" aria-label="설치 안내 숨기기">×</button></aside>
 <section id="map-section" class="card map-card"><div class="map-head"><span>🗺️ 대전 지역 주유소 지도</span><span class="legend">🟢 가능 <span class="unconfirmed">● 캐시백 미확인</span></span></div><div id="mapViewport" class="map-viewport"><div id="map" aria-label="대전 주유소 지도"></div></div><div id="mapError" class="map-error">지도를 불러오지 못했습니다. 주유소 검색과 목록은 계속 이용할 수 있어요.</div></section>
 <section id="stationPanel" class="card"><div class="empty">주유소 핀이나 검색 결과를 누르면 상세 정보가 표시됩니다.</div></section>
@@ -505,7 +505,7 @@ function highlightMobileFaqTarget(target){
  if(document.body.classList.contains('map-fullscreen')){
   ++fullscreenVersion;
   document.body.classList.remove('map-fullscreen');document.documentElement.classList.remove('map-fullscreen');
-  $('mapBack').hidden=true;
+  $('mapBack').hidden=false;
   document.documentElement.style.removeProperty('--map-viewport-height');
   requestAnimationFrame(()=>{if(map)resizeMap();});
  }
@@ -552,7 +552,7 @@ function returnToHome(){
  $('suggestions').hidden=true;$('suggestions').innerHTML='';
  closeDrawer();closeModal();renderAll();
  document.body.classList.remove('map-fullscreen');document.documentElement.classList.remove('map-fullscreen');
- document.documentElement.style.removeProperty('--map-viewport-height');$('mapBack').hidden=true;
+ document.documentElement.style.removeProperty('--map-viewport-height');$('mapBack').hidden=false;
  document.querySelector('main.wrap').scrollTop=0;
  const url=new URL(location.href);url.searchParams.delete('station');url.hash='';
  history.replaceState(history.state,'',url.pathname+url.search);
@@ -564,7 +564,7 @@ function returnToHome(){
   returningHome=false;
  });
 }
-$('mapBack').onclick=returnToHome;
+$('mapBack').onclick=returnToHome;$('mapHomeText').onclick=returnToHome;
 // Keep SDK marker/background handlers intact; sheet and dialog clicks are excluded.
 $('map').addEventListener('click',enterMapFullscreen);
 $('searchInput').oninput=()=>{cancelSearch();$('searchStatus').textContent='';autoSuggest()};$('searchInput').onfocus=()=>{enterMapFullscreen();renderSuggestions()};$('searchInput').onblur=()=>setTimeout(()=>$('suggestions').hidden=true,150);$('searchInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();runSearch()}if(e.key==='Escape')$('suggestions').hidden=true};$('searchGo').onclick=()=>{enterMapFullscreen();runSearch()};
