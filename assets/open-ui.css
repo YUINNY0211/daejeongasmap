@@ -66,3 +66,13 @@ body #stationPanel .station-detail .detail{padding-right:0}
 }
 
 #topMenu{width:min(360px,calc(100vw - 24px));padding:10px 14px;border:1px solid #d5e4dc;border-radius:22px;background:#fff;box-shadow:0 12px 35px #143d2826}#topMenu>a,#topMenu>button{display:flex;align-items:center;gap:12px;width:100%;min-height:58px;margin:0;padding:8px 0;border:0;border-bottom:1px solid #d5e4dc;border-radius:0;background:transparent;color:#193e2c;font-size:15px;font-weight:750;text-align:left}#topMenu>:last-child{border-bottom:0}#topMenu .drawer-icon{display:grid;place-items:center;flex:none;width:42px;height:42px;border-radius:13px;font-size:25px;background:#e1f5e8}#topMenu .drawer-label{flex:1;min-width:0}#topMenu .drawer-chevron{flex:none;color:#858b87;font-size:28px;font-weight:400}#topMenu .drawer-icon-1{background:#fff0d7}#topMenu .drawer-icon-2{background:#dff2fb}#topMenu .drawer-icon-3{background:#efe6ff}#topMenu .drawer-icon-4{background:#e1f1ff}#topMenu .drawer-icon-5{background:#ededed}#topMenu .drawer-icon-6{background:#e6f5d9}#topMenu .drawer-icon-7{background:#fbe4ed}
+
+/* Approved drawer-only SVG system; ID specificity overrides prior responsive drawer rules. */
+#topMenu{padding:6px 12px;gap:0}
+#topMenu>a,#topMenu>button{height:auto;min-height:54px;gap:12px;padding:8px 0;font-size:15px;font-weight:700;line-height:1.4;color:#193e2c}
+#topMenu .drawer-icon{width:36px;height:36px;min-width:36px;flex:0 0 36px;border-radius:10px;margin:0;background:#e0f5e8;color:#237750}
+#topMenu .drawer-icon svg{display:block;width:22px;height:22px;flex:none}
+#topMenu .drawer-icon-1{background:#fff0d9;color:#df751c}#topMenu .drawer-icon-2{background:#ddf1fc;color:#1583af}#topMenu .drawer-icon-3{background:#eee5ff;color:#9062cc}#topMenu .drawer-icon-4{background:#e1f2ff;color:#2984cb}#topMenu .drawer-icon-5{background:#ebeded;color:#64716d}#topMenu .drawer-icon-6{background:#e5f5d7;color:#238338}#topMenu .drawer-icon-7{background:#fce3ec;color:#d94d82}
+#topMenu .drawer-label{font-size:15px;font-weight:700;color:#193e2c;line-height:1.4}
+#topMenu .drawer-chevron{display:grid;place-items:center;width:18px;height:18px;flex:0 0 18px;margin:0;color:#858b87;font-size:18px}
+#topMenu .drawer-chevron svg{width:18px;height:18px;display:block}
