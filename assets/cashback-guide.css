@@ -48,3 +48,4 @@
 #site-guide .cashback-entry strong>span{display:block;white-space:nowrap}
 @media(max-width:767px){#site-guide .cashback-entry{font-size:13px;height:64px;min-height:64px;padding:10px;gap:9px}}
 @media(max-width:359px){#site-guide .cashback-entry{font-size:12px;padding:8px;gap:7px}#site-guide .cashback-entry strong{letter-spacing:-.5px}}
+@media(min-width:768px){#site-guide .cashback-entry strong>span{display:inline}#site-guide .cashback-entry strong>span+span::before{content:" "}}
