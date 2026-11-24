@@ -33,4 +33,11 @@
 
 /* Approved title wrapping, scoped to the cashback guide. */
 .cashback-guide .cashback-page-title{overflow-wrap:normal;word-break:keep-all}
-@media(max-width:767px){.cashback-guide .cashback-page-title span{display:block}}
+
+
+/* Approved one-line titles; only cashback entry spans the mobile grid. */
+#site-guide .cashback-entry strong{white-space:nowrap;letter-spacing:normal}
+.cashback-guide .cashback-page-title{white-space:nowrap;font-size:clamp(18px,5vw,28px);letter-spacing:-.3px}
+@media(max-width:767px){#site-guide .cashback-entry{grid-column:1/-1;font-size:14px}#site-guide .cashback-entry strong{letter-spacing:-.3px}}
+@media(max-width:359px){#site-guide .cashback-entry{font-size:13px;padding:8px;gap:7px}.cashback-guide .article-heading{padding-left:12px;padding-right:12px}.cashback-guide .cashback-page-title{font-size:18px;letter-spacing:-.5px}}
+.cashback-guide .article-heading .cashback-page-title{font-size:clamp(18px,5vw,28px)}@media(max-width:359px){.cashback-guide .article-heading .cashback-page-title{font-size:18px}}
