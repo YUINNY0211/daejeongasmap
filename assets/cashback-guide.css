@@ -4,3 +4,29 @@
 @media(prefers-reduced-motion:reduce){.cashback-guide .guide-track{transition:none}}
 .cashback-guide .guide-track{align-items:flex-start}.cashback-guide .guide-image{height:auto}
 .cashback-guide .guide-image{width:auto;max-width:100%;max-height:45vh;object-fit:contain}
+/* Four-step guide: scoped additions; existing menu cards and map remain untouched. */
+#site-guide .cashback-resources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+#site-guide .cashback-entry{width:auto;max-width:none;margin:0;gap:12px;min-height:72px;padding:13px 14px;border:1px solid #e3e6e6;border-radius:17px;font-size:16px;font-weight:650;line-height:1.35}
+#site-guide .cashback-entry small{font-size:11px}
+.cashback-ad-slot[hidden]{display:none}
+.cashback-guide .guide-slides{margin-top:14px}
+.cashback-guide .guide-image{display:block;width:auto;height:auto;max-width:100%;max-height:55vh;margin:14px auto;object-fit:contain}
+.cashback-guide .guide-image-link{display:block;background:white}
+.cashback-guide .step-number{margin:0 0 5px;color:#94701d;font-size:13px;font-weight:700}
+.cashback-guide .slide-controls{padding-bottom:env(safe-area-inset-bottom,0px)}
+.cashback-guide .guide-dots button{min-width:44px;min-height:44px}
+.cashback-guide .guide-slide{font-size:16px}
+.cashback-guide .guide-slide h2{font-size:21px}
+@media(max-width:767px){
+ #site-guide .cashback-entry{gap:9px;min-height:64px;padding:10px;border-radius:15px;font-size:13px}
+ .cashback-guide .guide-image{max-height:60svh;max-width:100%;width:auto;height:auto}
+ .cashback-guide .guide-slide{padding:14px;font-size:16px}
+ .cashback-guide .guide-slide h2{font-size:19px}
+ .cashback-guide .slide-controls{position:sticky;bottom:0;background:#fff;padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px));z-index:2}
+ .cashback-guide .page-content{padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
+ .cashback-resources .cashback-ad-slot{grid-column:1/-1}
+}
+@media(max-width:359px){#site-guide .cashback-entry{gap:7px;padding:8px;font-size:12px}#site-guide .cashback-entry .home-menu-icon{width:30px;height:30px;border-radius:10px}#site-guide .cashback-entry .home-menu-icon svg{width:21px;height:21px}}
+#site-guide .cashback-entry>span:last-child{min-width:0;flex:1}
+#site-guide .cashback-entry small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:767px){#site-guide .cashback-entry strong{white-space:nowrap;letter-spacing:-.6px}}
