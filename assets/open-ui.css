@@ -76,3 +76,7 @@ body #stationPanel .station-detail .detail{padding-right:0}
 #topMenu .drawer-label{font-size:15px;font-weight:700;color:#193e2c;line-height:1.4}
 #topMenu .drawer-chevron{display:grid;place-items:center;width:18px;height:18px;flex:0 0 18px;margin:0;color:#858b87;font-size:18px}
 #topMenu .drawer-chevron svg{width:18px;height:18px;display:block}
+
+/* Shared banner menu target; retain existing responsive top/right offsets. */
+.approved-banner #menuToggle{display:grid;place-items:center;width:44px;height:44px;min-width:44px;min-height:44px;max-width:44px;padding:0;background:#fff;color:#174c34;box-sizing:border-box}
+.approved-banner #menuToggle svg{display:block;width:24px;height:24px;stroke-width:2}
