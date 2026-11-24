@@ -1,0 +1,10 @@
+const fs=require('fs'),assert=require('assert/strict'),vm=require('vm');
+const html=fs.readFileSync('index.html','utf8'),client=fs.readFileSync('citizen-page.js','utf8'),css=fs.readFileSync('assets/open-ui.css','utf8');
+assert.ok(!/suggestionMessage|suggestionPrivacy|suggestionCount|informationBack/.test(html+client));assert.ok(!html.includes('siteTestNotice'));assert.ok(!html.includes('초기화될 수 있습니다'));
+assert.match(client,/message:''/);assert.match(client,/station-identity-group/);assert.match(client,/gasmap:station-rendered/);assert.match(client,/address-attention/);
+assert.match(css,/rgba\(255,255,255,\.5\)/);assert.ok(!/opacity:\s*0?\.5/.test(css));assert.match(css,/grid-template-columns:44px minmax\(0,1fr\) 44px/);assert.match(css,/margin:10px auto/);
+for(const emoji of ['📢','📍','⛽','🧭','💚'])assert.ok(html.includes(emoji));
+const pos={window:{},document:{getElementById:()=>null}};vm.createContext(pos);vm.runInContext(fs.readFileSync('assets/feedback-position.js','utf8'),pos);
+const p=pos.window.computeFeedbackPosition({viewport:{left:0,top:0,width:390,height:760},button:{width:64,height:46},panelAnchor:true,panelRect:{left:6,top:470,right:384,bottom:760},contactRect:{left:17,top:625,right:373,bottom:690},contentRects:[{left:17,top:480,right:373,bottom:600},{left:17,top:630,right:290,bottom:680},{left:17,top:700,right:373,bottom:744}]});
+assert.ok(p.top>=625&&p.top+60<=692);assert.ok(p.left>=300);
+console.log('PASS final UI structure, centered prompt, one-row mobile search, glass text opacity and first-contact-area balloon geometry.');

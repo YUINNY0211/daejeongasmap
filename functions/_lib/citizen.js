@@ -88,7 +88,7 @@ export async function handle({request,env},deps={}){
   }else{
    if(b.stationId!==null&&b.stationId!==undefined)id=await station(db,b.stationId);
    if(route==='reports'){if(id===null)fail(400,'unknown_station');if(!['received','not_received'].includes(b.status)||!tokenPattern.test(b.manageToken||''))fail(400,'invalid_status');manageHash=await digest(b.manageToken);}
-   else{if(!items[b.category]?.includes(b.item))fail(400,'invalid_category');if(id===null&&b.category!=='other')fail(400,'unknown_station');message=text(b.message,1,Number.POSITIVE_INFINITY);}
+   else{if(!items[b.category]?.includes(b.item))fail(400,'invalid_category');if(id===null&&b.category!=='other')fail(400,'unknown_station');message=text(b.message??'',0,Number.POSITIVE_INFINITY);}
   }
   const fingerprint=await digest(JSON.stringify([route,id,b.status??null,b.reportId??null,b.operation??null,manageHash,b.category??null,b.item??null,message,b.clientId,b.revision??null]));
   const previous=await replay(db,b,fingerprint);if(previous)return json(previous);

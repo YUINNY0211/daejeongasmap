@@ -1,12 +1,20 @@
 (()=>{
  const $=id=>document.getElementById(id),mode=matchMedia('(display-mode: standalone)');
- let deferredPrompt=null,installed=navigator.standalone===true||mode.matches;
+ let deferredPrompt=null,installed=navigator.standalone===true||mode.matches,checkingRelated=false;
  const read=key=>{try{return localStorage.getItem(key)==='1';}catch{return false;}};
  const save=key=>{try{localStorage.setItem(key,'1');}catch{}};
  function update(){
   if(navigator.standalone===true||mode.matches){installed=true;save('gasmapPwaInstalled');}
-  $('installPrompt').hidden=installed||read('gasmapPwaInstalled')||read('gasmapInstallDismissed');
+  $('installPrompt').hidden=checkingRelated||installed||read('gasmapPwaInstalled')||read('gasmapInstallDismissed');
   $('installNative').hidden=installed||!deferredPrompt;
+ }
+ async function checkInstalled(){
+  update();if(installed||typeof navigator.getInstalledRelatedApps!=='function'||checkingRelated)return;
+  checkingRelated=true;update();
+  try{
+   const apps=await navigator.getInstalledRelatedApps();
+   if(apps.some(app=>app.platform==='webapp'&&app.url==='https://daejeongasmap.kr/manifest.webmanifest')){installed=true;save('gasmapPwaInstalled');deferredPrompt=null;}
+  }catch{}finally{checkingRelated=false;update();}
  }
  window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredPrompt=event;update();});
  window.addEventListener('appinstalled',()=>{installed=true;deferredPrompt=null;save('gasmapPwaInstalled');update();});
@@ -26,5 +34,8 @@
   deferredPrompt=null;update();
   try{await prompt.prompt();const choice=await prompt.userChoice;if(choice.outcome==='dismissed'){save('gasmapInstallDismissed');update();}}catch{}
  };
- update();
+ window.addEventListener('pageshow',checkInstalled);
+ document.addEventListener?.('visibilitychange',()=>{if(document.visibilityState==='visible')checkInstalled();});
+ window.addEventListener('storage',event=>{if(['gasmapPwaInstalled','gasmapInstallDismissed'].includes(event.key))update();});
+ checkInstalled();
 })();
