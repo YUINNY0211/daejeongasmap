@@ -1,7 +1,7 @@
 const fs=require('fs'),assert=require('assert/strict'),vm=require('vm');
 const html=fs.readFileSync('index.html','utf8'),client=fs.readFileSync('citizen-page.js','utf8'),css=fs.readFileSync('assets/open-ui.css','utf8');
-assert.ok(!/suggestionMessage|suggestionPrivacy|suggestionCount|informationBack/.test(html+client));assert.ok(!html.includes('siteTestNotice'));assert.ok(!html.includes('초기화될 수 있습니다'));
-assert.match(client,/message:''/);assert.match(client,/station-identity-group/);assert.match(client,/gasmap:station-rendered/);assert.match(client,/address-attention/);
+assert.ok(!/suggestionCount/.test(html+client));for(const id of ['suggestionMessage','suggestionPrivacy','informationBack'])assert.ok(html.includes('id="'+id+'"'));assert.ok(!/<label[^>]*>상세 내용<\/label>/.test(html));assert.ok(!/minlength=|maxlength=/.test(html));assert.ok(!html.includes('siteTestNotice'));assert.ok(!html.includes('초기화될 수 있습니다'));
+assert.match(client,/message:description/);assert.match(client,/station-identity-group/);assert.match(client,/gasmap:station-rendered/);assert.match(client,/address-attention/);
 assert.match(css,/rgba\(255,255,255,\.5\)/);assert.ok(!/opacity:\s*0?\.5/.test(css));assert.match(css,/grid-template-columns:44px minmax\(0,1fr\) 44px/);assert.match(css,/margin:10px auto/);
 for(const emoji of ['📢','📍','⛽','🧭','💚'])assert.ok(html.includes(emoji));
 const pos={window:{},document:{getElementById:()=>null}};vm.createContext(pos);vm.runInContext(fs.readFileSync('assets/feedback-position.js','utf8'),pos);

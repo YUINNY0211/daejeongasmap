@@ -63,21 +63,22 @@ window.createCitizenPage=function(bridge){
    const id=selected?.id??null;
    if(informationStationId!==id){
     const draft=pendingInformation||informationDrafts.get(id);pendingInformation=null;informationStationId=id;informationGroup=null;informationItem=null;
-    $('informationOptions').innerHTML='';
+    $('suggestionMessage').value=draft?.description||'';$('informationOptions').innerHTML='';
     Object.keys(informationGroups).forEach(group=>$('informationEdit').querySelector('[data-category="'+group+'"]').setAttribute('aria-pressed','false'));
     if(draft?.group){chooseInformationGroup(draft.group);if(informationGroups[draft.group].some(([value])=>value===draft.item)){informationItem=draft.item;$('informationOptions').querySelector('[data-information-item="'+draft.item+'"]').checked=true;}}
    }
    $('informationStationName').textContent=selected?.name||'';
    $('informationStationAddress').textContent=selected?.address||'';
-   resetInformationReview();updateInformationReviewButton();
+   resetInformationReview();updateSuggestionCount();updateInformationReviewButton();
    if($('citizenReportDialog').open)$('citizenReportDialog').close();if(!$('informationReportDialog').open)$('informationReportDialog').showModal();
   }else{
    $('reportStationName').textContent=selected.name;renderOwnership();if($('informationReportDialog').open)$('informationReportDialog').close();if(!$('citizenReportDialog').open)$('citizenReportDialog').showModal();
   }
  }
  function openInformation(){openReport('information');}
- function saveInformationDraft(){informationDrafts.set(informationStationId,{group:informationGroup,item:informationItem});}
+ function saveInformationDraft(){informationDrafts.set(informationStationId,{group:informationGroup,item:informationItem,description:$('suggestionMessage').value});}
 
+ function updateSuggestionCount(){updateInformationReviewButton();}
  function ownershipTime(row){if(!Number.isSafeInteger(row.created))return '';const date=new Date(row.created+9*3600000);return Number.isFinite(date.getTime())?fmt(date.toISOString().slice(0,16)+'+09:00'):'';}
  function renderOwnership(){const box=$('myReports');if(!box)return;const owned=Object.entries(ownership).filter(([,r])=>r.stationId===Number(selected?.id)&&(!r.manageExpiresAt||r.manageExpiresAt>Date.now()));$('reportChoices').hidden=owned.length>0;box.innerHTML=owned.length?owned.map(([id,r])=>'<div class="manage-row"><span class="manage-result"><span class="experience-result"><i class="experience-status '+(r.status==='received'?'yes':'no')+'" aria-hidden="true"></i>'+(r.status==='received'?'받았어요':'못 받았어요')+'</span> · 등록 완료'+(ownershipTime(r)?' <time>'+esc(ownershipTime(r))+'</time>':'')+'</span><span><button type="button" data-write data-cancel="'+id+'">제보 취소</button> <button type="button" data-write data-change="'+id+'">반대로 변경</button></span></div>').join(''):'';box.querySelectorAll('[data-change]').forEach(b=>b.onclick=()=>manageReport(Number(b.dataset.change),'change'));box.querySelectorAll('[data-cancel]').forEach(b=>b.onclick=()=>manageReport(Number(b.dataset.cancel),'cancel'));}
  async function submit(kind,data){if(busy)return null;noticeTarget=kind==='suggestions'?'information':'experience';busy=true;document.querySelectorAll('[data-write]').forEach(b=>b.disabled=true);message(kind==='suggestions'?'보안 확인 및 의견 전송 중…':'보안 확인 및 등록 중…');try{const result=await Citizen.send(kind,data,$(kind==='suggestions'?'informationTurnstile':'turnstileMount'));return result;}catch(e){if(kind==='manage'&&['management_expired','not_found','revision_conflict'].includes(e.message)&&Citizen.syncOwnership){ownership=await Citizen.syncOwnership();renderOwnership();}const labels={management_expired:'등록 후 90일이 지나 관리 기간이 끝났어요.',request_confirmation_required:'오래된 요청은 다시 보내지 않았어요. 내용을 확인한 후 다시 눌러 주세요.',request_expired:'요청 유효기간이 끝났어요. 내용을 확인한 후 다시 눌러 주세요.',revision_conflict:'다른 변경이 먼저 반영됐어요. 다시 조회해 주세요.',duplicate_experience:'이미 처리한 요청이에요.',rate_limited:'반복 요청은 잠시 후 다시 시도해 주세요.',request_uncertain:'등록 여부를 확인하지 못했어요. 최근 제보를 먼저 조회해 주세요.',verification_failed:'보안 확인에 실패했어요. 다시 시도해 주세요.',not_enabled:'아직 제보 접수를 시작하지 않았어요.',writer_transition:'제보 시스템 전환 중이에요. 잠시 후 다시 시도해 주세요.',replayed_request:'이미 처리한 요청이에요.'};const informationLabels={request_confirmation_required:'오래된 요청은 다시 보내지 않았어요. 내용을 확인한 후 다시 눌러 주세요.',request_expired:'요청 유효기간이 끝났어요. 내용을 확인한 후 다시 눌러 주세요.',rate_limited:'반복 요청은 잠시 후 다시 시도해 주세요.',request_uncertain:'의견 접수 여부를 확인하지 못했어요. 같은 내용으로 다시 시도해 주세요.',verification_failed:'보안 확인에 실패했어요. 다시 시도해 주세요.',not_enabled:'아직 의견 접수를 시작하지 않았어요.',writer_transition:'의견 접수 시스템 전환 중이에요. 잠시 후 다시 시도해 주세요.',replayed_request:'이미 처리한 요청이에요.',invalid_category:'해당하는 항목을 선택해 주세요'};message(kind==='suggestions'?(informationLabels[e.message]||'의견을 보내지 못했어요. 잠시 후 다시 시도해 주세요.'):(labels[e.message]||'등록하지 못했어요. 잠시 후 다시 시도해 주세요.'));return null;}finally{busy=false;document.querySelectorAll('[data-write]').forEach(b=>b.disabled=false);}}
@@ -89,27 +90,30 @@ window.createCitizenPage=function(bridge){
  $('routeDialogClose').onclick=()=>$('stationRouteDialog').close();
  $('reportRecentMore').onclick=()=>more('station');$('reportRecentCollapse').onclick=()=>collapse('station');
  $('feedbackYes').onclick=()=>report('received');$('feedbackNo').onclick=()=>report('not_received');$('reportDialogClose').onclick=()=>{if(!busy)$('citizenReportDialog').close();};$('citizenReportDialog').addEventListener('cancel',e=>{if(busy)e.preventDefault();});$('allMore').onclick=()=>more('all');$('allCollapse').onclick=()=>collapse('all');$('allRefresh').onclick=refresh;const globalReport=$('openReport');if(globalReport)globalReport.onclick=openReport;$('floatingReport').onclick=()=>{if(busy)return;if(!selected){pendingOpen='experience';showFeedbackToast();return;}openReport();};$('dockReport').onclick=e=>{e.preventDefault();openInformation();};
- $('informationClose').onclick=()=>{if(!busy){saveInformationDraft();$('informationReportDialog').close();}};$('informationReportDialog').addEventListener('cancel',e=>{if(busy)e.preventDefault();});
+ $('informationClose').onclick=()=>{if(!busy){saveInformationDraft();$('informationReportDialog').close();}};$('informationReportDialog').addEventListener('cancel',e=>{if(busy)e.preventDefault();});$('suggestionMessage').oninput=updateSuggestionCount;
  const informationGroups={cashback:[['cashback_received','캐시백 받았어요'],['cashback_not_received','캐시백 못 받았어요'],['official_mismatch','공식 앱 정보와 달라요']],location:[['location','지도 위치가 달라요'],['address','주소가 달라요']],other:[['carwash','세차장 정보 수정'],['brand_name','주유소 상호 변경'],['brand_change','주유소 브랜드 변경'],['closed_moved','폐업·이전 신고'],['other','기타 정보 오류']]};
  let informationGroup=null,informationItem=null,informationConfirmed=false,experienceChoice=null,informationStationId=null,reviewStationId=null,pendingInformation=null;const informationDrafts=new Map();
  function renderExperienceChoice(){$('feedbackYes').setAttribute('aria-pressed',String(experienceChoice==='received'));$('feedbackNo').setAttribute('aria-pressed',String(experienceChoice==='not_received'));}
- function updateInformationReviewButton(){const other=informationGroup==='other';$('informationStationCard').hidden=other||!selected;$('informationReviewStation').hidden=other;$('informationReportDialog').classList.toggle('other-information',other);$('informationStationName').hidden=false;const needsStation=!selected&&['cashback','location'].includes(informationGroup);$('informationPickStation').hidden=!needsStation;if(!needsStation)$('informationPickStation').classList.remove('selection-attention');$('informationReview').disabled=!informationItem||needsStation;$('informationSubmit').disabled=!informationItem||needsStation;}
+ function updateInformationReviewButton(){const other=informationGroup==='other';$('informationStationCard').hidden=other||!selected;$('informationReviewStation').hidden=other;$('informationReportDialog').classList.toggle('other-information',other);$('informationStationName').hidden=false;const needsStation=!selected&&['cashback','location'].includes(informationGroup);$('informationPickStation').hidden=!needsStation;if(!needsStation)$('informationPickStation').classList.remove('selection-attention');$('informationReview').disabled=!informationItem||needsStation;$('informationSubmit').disabled=!$('suggestionMessage').value.trim();}
  function resetInformationReview(){informationConfirmed=false;$('informationEdit').hidden=false;$('informationConfirm').hidden=true;}
  function chooseInformationGroup(group){if(busy||!Object.hasOwn(informationGroups,group))return;informationGroup=group;informationItem=null;resetInformationReview();Object.keys(informationGroups).forEach(name=>$('informationEdit').querySelector('[data-category="'+name+'"]').setAttribute('aria-pressed',String(name===group)));$('informationOptions').innerHTML=informationGroups[group].map(([value,label])=>'<label class="information-option"><input type="radio" name="informationItem" value="'+value+'" data-information-item="'+value+'"><span>'+label+'</span></label>').join('');informationGroups[group].forEach(([value])=>{$('informationOptions').querySelector('[data-information-item="'+value+'"]').onchange=()=>{informationItem=value;informationConfirmed=false;updateInformationReviewButton();};});updateInformationReviewButton();if(!selected&&group!=='other'){const prompt=$('informationPickStation');prompt.classList.remove('selection-attention');void prompt.offsetWidth;prompt.classList.add('selection-attention');}}
  function informationLabel(){return (informationGroups[informationGroup]||[]).find(([value])=>value===informationItem)?.[1];}
  Object.keys(informationGroups).forEach(group=>$('informationEdit').querySelector('[data-category="'+group+'"]').onclick=()=>chooseInformationGroup(group));
  $('informationReview').onclick=()=>{if(busy)return;updateInformationReviewButton();if($('informationReview').disabled)return;informationConfirmed=true;reviewStationId=selected?.id??null;$('informationReviewStation').textContent=selected?selected.name+' · '+(selected.address||''):'기타';$('informationReviewCategory').textContent=informationLabel();$('informationEdit').hidden=true;$('informationConfirm').hidden=false;};
+ $('informationBack').onclick=()=>{if(!busy)resetInformationReview()};
  $('informationPickStation').onclick=()=>{
-  if(busy)return;pendingInformation={group:informationGroup,item:informationItem};saveInformationDraft();pendingOpen='information';$('informationReportDialog').close();bridge.focusMap();$('searchStatus').textContent='의견을 보낼 주유소를 먼저 선택해 주세요.';
+  if(busy)return;pendingInformation={group:informationGroup,item:informationItem,description:$('suggestionMessage').value};saveInformationDraft();pendingOpen='information';$('informationReportDialog').close();bridge.focusMap();$('searchStatus').textContent='의견을 보낼 주유소를 먼저 선택해 주세요.';
  };
  $('suggestionForm').onsubmit=async e=>{
   e.preventDefault();noticeTarget='information';const id=selected?.id??null;
   if(informationStationId!==id){openInformation();message('주유소가 변경됐어요. 항목을 다시 확인해 주세요.');return;}
   if(!selected&&informationGroup!=='other'){updateInformationReviewButton();return;}
+  const description=$('suggestionMessage').value.trim();
   if(!informationItem||!informationLabel()){message('해당하는 항목을 선택해 주세요');return;}
+  if(!description){message('상세 내용을 입력해 주세요.');return;}
   if(!informationConfirmed||reviewStationId!==id){resetInformationReview();$('informationReview').onclick();return;}
-  const result=await submit('suggestions',{stationId:id,category:informationGroup,item:informationItem,message:''});
-  if(result){informationDrafts.delete(id);informationItem=null;resetInformationReview();if(informationGroup)chooseInformationGroup(informationGroup);message('의견을 비공개로 접수했어요. 관리자 검토 전 원본 정보는 바뀌지 않아요.');}
+  const result=await submit('suggestions',{stationId:id,category:informationGroup,item:informationItem,message:description});
+  if(result){informationDrafts.delete(id);$('suggestionMessage').value='';informationItem=null;updateSuggestionCount();resetInformationReview();if(informationGroup)chooseInformationGroup(informationGroup);message('의견을 비공개로 접수했어요. 관리자 검토 전 원본 정보는 바뀌지 않아요.');}
  };
  $('checkedDate').textContent='최종 확인일: '+cfg.checkedDate;
  Citizen.config().catch(()=>{});

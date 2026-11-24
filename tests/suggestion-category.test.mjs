@@ -10,12 +10,13 @@ try{
   {stationId:222,category:'cashback',item:'cashback_received',message:''},
   {stationId:222,category:'location',item:'address',message:''},
   {stationId:null,category:'other',item:'closed_moved'},
-  {stationId:null,category:'other',item:'other',message:'과거 클라이언트의 상세 내용'}
+  {stationId:null,category:'other',item:'other',message:'과거 클라이언트의 상세 내용'},
+  ...['가','짧은글','긴 의견 '.repeat(100).trim()].map(message=>({stationId:null,category:'other',item:'other',message}))
  ]){const result=await send(data);assert.equal(result.status,201,await result.text());assert.equal(db.sql.prepare('SELECT body FROM citizen_suggestions ORDER BY id DESC LIMIT 1').get().body,data.message||'');}
  assert.equal(db.sql.prepare('SELECT body FROM citizen_suggestions WHERE id=1').get().body,'기존에 저장된 과거 의견');
  assert.equal((await send({stationId:null,category:'cashback',item:'cashback_received',message:''})).status,400);
  assert.equal((await send({stationId:222,category:'other',item:'invalid',message:''})).status,400);
  assert.equal((await send({stationId:null,category:'other',item:'other',message:7})).status,400);
- assert.equal(db.sql.prepare('SELECT COUNT(*) n FROM citizen_suggestions').get().n,5);
+ assert.equal(db.sql.prepare('SELECT COUNT(*) n FROM citizen_suggestions').get().n,8);
  console.log('PASS actual API + SQLite: category-only cashback/location/other accepted; old content preserved; invalid station/category/type rejected.');
 }finally{db.close();}

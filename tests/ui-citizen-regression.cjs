@@ -45,8 +45,17 @@ el('informationEdit').querySelector('[data-category="other"]').onclick();
 ok('other type hides the complete station identity card only',()=>{assert.equal(el('informationStationCard').hidden,true);assert.equal(el('informationReviewStation').hidden,true);assert.equal(el('informationReportDialog').classList.contains('other-information'),true);});
 el('informationOptions').querySelector('[data-information-item="other"]').onchange();el('informationReview').onclick();
 ok('other type review remains usable in compact mode',()=>{assert.equal(el('informationConfirm').hidden,false);assert.equal(el('informationEdit').hidden,true);});
+el('suggestionMessage').value='가';el('suggestionMessage').oninput();
 const otherSend=el('suggestionForm').onsubmit({preventDefault(){}});
-ok('other suggestion keeps selected station and existing send payload',()=>{assert.equal(sendArgs.kind,'suggestions');assert.equal(sendArgs.data.stationId,1);assert.equal(sendArgs.data.category,'other');assert.equal(sendArgs.data.item,'other');});resolveSend({ok:true});await otherSend;
+ok('other suggestion keeps selected station and existing send payload',()=>{assert.equal(sendArgs.kind,'suggestions');assert.equal(sendArgs.data.stationId,1);assert.equal(sendArgs.data.category,'other');assert.equal(sendArgs.data.item,'other');assert.equal(sendArgs.data.message,'가');});resolveSend({ok:true});await otherSend;
+
+for(const body of ['짧은글','긴 의견 '.repeat(100).trim()]){
+ el('informationEdit').querySelector('[data-category="other"]').onclick();el('informationOptions').querySelector('[data-information-item="other"]').onchange();el('informationReview').onclick();
+ el('suggestionMessage').value='   ';el('suggestionMessage').oninput();ok('whitespace-only opinion disables send',()=>assert.equal(el('informationSubmit').disabled,true));
+ const previous=sendArgs;await el('suggestionForm').onsubmit({preventDefault(){}});ok('whitespace cannot reach API',()=>assert.equal(sendArgs,previous));
+ el('suggestionMessage').value=body;el('suggestionMessage').oninput();el('informationBack').onclick();ok('edit button returns and preserves opinion',()=>{assert.equal(el('informationEdit').hidden,false);assert.equal(el('suggestionMessage').value,body);});el('informationReview').onclick();
+ const pending=el('suggestionForm').onsubmit({preventDefault(){}});ok('short and long opinion reach send unchanged',()=>assert.equal(sendArgs.data.message,body));resolveSend({ok:true});await pending;
+}
 el('informationEdit').querySelector('[data-category="cashback"]').onclick();
 ok('switching away from other restores standard station information',()=>{assert.equal(el('informationStationCard').hidden,false);assert.equal(el('informationReviewStation').hidden,false);assert.equal(el('informationReportDialog').classList.contains('other-information'),false);});
 el('dockReport').onclick({preventDefault(){}});el('informationEdit').querySelector('[data-category="cashback"]').onclick();el('informationOptions').querySelector('[data-information-item="cashback_received"]').onchange();
