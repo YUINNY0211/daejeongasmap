@@ -48,7 +48,7 @@ main{padding-top:13px}.card{background:white;border:1px solid #e5f0e9;border-rad
 <link rel="stylesheet" href="/assets/ui-test.css?v=ba1f1303aa0e">
 <script defer src="/assets/feedback-position.js?v=08ed431d4a08"></script>
 <script defer src="/assets/install-guide.js?v=356a564ecada"></script>
-<link rel="stylesheet" href="/assets/open-ui.css?v=9584cff3bfbd">
+<link rel="stylesheet" href="/assets/open-ui.css?v=da3eb6a48e23">
 </head>
 <body>
 
@@ -269,8 +269,32 @@ function runSearch(){
 
  searchAddress();
 }
+let stationHistoryActive=history.state?.gasMap?.view==='station',restoringStationHistory=false;
+function rememberStationHistory(station){
+ if(restoringStationHistory)return;
+ const home=new URL(location.href);home.searchParams.delete('station');home.hash='';
+ const detail=new URL(home);detail.searchParams.set('station',station.id);
+ if(history.state?.gasMap?.view!=='station'){
+  history.replaceState({...history.state,gasMap:{view:'home'}},'',home.pathname+home.search);
+  history.pushState({...history.state,gasMap:{view:'station',stationId:station.id}},'',detail.pathname+detail.search);
+ }else history.replaceState({...history.state,gasMap:{view:'station',stationId:station.id}},'',detail.pathname+detail.search);
+ stationHistoryActive=true;
+}
+function finishStationHomeHistory(url,fromHistory){
+ if(!fromHistory&&history.state?.gasMap?.view==='station'){
+  stationHistoryActive=false;history.back();
+ }else{stationHistoryActive=false;history.replaceState(history.state,'',url);}
+}
+window.addEventListener('popstate',event=>{
+ const wasStation=stationHistoryActive;stationHistoryActive=event.state?.gasMap?.view==='station';
+ if(stationHistoryActive){
+  const station=stations.find(s=>s.id===event.state.gasMap.stationId);
+  if(station){restoringStationHistory=true;try{choose(station);}finally{restoringStationHistory=false;}}
+ }else if(wasStation&&event.state?.gasMap?.view==='home')returnToHome({fromHistory:true});
+});
 let mapFocusVersion=0;
 function choose(s){
+ rememberStationHistory(s);
  enterMapFullscreen();
  const focusVersion=++mapFocusVersion;
  pinVisibility?.cancel();
@@ -539,8 +563,8 @@ function enterMapFullscreen(){
  $('mapBack').hidden=false;
  requestAnimationFrame(()=>{if(version===fullscreenVersion&&map){resizeMap();pinVisibility?.request(false);}});
 }
-function returnToHome(){
- if(returningHome||!document.body.classList.contains('map-fullscreen'))return;
+function returnToHome({fromHistory=false}={}){
+ if(returningHome||(!fromHistory&&!document.body.classList.contains('map-fullscreen')))return;
  returningHome=true;
  if(!CitizenPage.resetForHome()){returningHome=false;return;}
  const version=++fullscreenVersion;
@@ -555,7 +579,7 @@ function returnToHome(){
  document.documentElement.style.removeProperty('--map-viewport-height');$('mapBack').hidden=false;
  document.querySelector('main.wrap').scrollTop=0;
  const url=new URL(location.href);url.searchParams.delete('station');url.hash='';
- history.replaceState(history.state,'',url.pathname+url.search);
+ finishStationHomeHistory(url.pathname+url.search,fromHistory);
  $('menuToggle').focus({preventScroll:true});
  window.scrollTo({top:0,left:0,behavior:'instant'});
  requestAnimationFrame(()=>{

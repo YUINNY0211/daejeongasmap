@@ -52,3 +52,15 @@ body #stationPanel .station-detail .detail{padding-right:0}
  body #stationPanel .sheet-identity{min-height:0;margin:2px 0 0;padding:0 44px 0 0;gap:2px 6px}
  body #stationPanel .station-tags{min-height:0;margin:3px 0 0;gap:3px}
 }
+
+/* Compact desktop identity spacing, matching the existing mobile grouping. */
+@media(min-width:600px){
+ body #stationPanel .station-surface{gap:6px}
+ body #stationPanel .station-identity-group{position:relative;min-height:0;padding:6px 8px}
+ body #stationPanel .compact-head{min-height:0;gap:0}
+ body #stationPanel .compact-title{padding-right:44px}
+ body #stationPanel .compact-title h2{margin:0}
+ body #stationPanel .sheet-controls{position:absolute;top:4px;right:4px}
+ body #stationPanel .sheet-identity{min-height:0;margin:2px 0 0;padding:0 44px 0 0;gap:2px 6px}
+ body #stationPanel .station-tags{min-height:0;margin:3px 0 0;gap:3px}
+}
