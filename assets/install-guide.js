@@ -15,12 +15,11 @@
   const menu=$('topMenu');if(menu){menu.hidden=true;menu.classList.remove('open');$('drawerBackdrop').hidden=true;}
   if(!$('installGuide').open){
    const dialog=$('installGuide');
-   dialog.querySelectorAll('template.install-screenshot-source').forEach(template=>{const fragment=template.content.cloneNode(true);fragment.firstElementChild.dataset.installLoaded='true';template.after(fragment);});
    dialog.hidden=false;dialog.showModal();
   }
  }));
  $('installGuideClose').onclick=()=>$('installGuide').close();
- $('installGuide').addEventListener('close',()=>{$('installGuide').hidden=true;$('installGuide').querySelectorAll('[data-install-loaded]').forEach(image=>image.remove());});
+ $('installGuide').addEventListener('close',()=>{$('installGuide').hidden=true;});
  $('installDismiss').onclick=()=>{save('gasmapInstallDismissed');update();};
  $('installNative').onclick=async()=>{
   const prompt=deferredPrompt;if(!prompt)return;
