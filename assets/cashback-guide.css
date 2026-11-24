@@ -30,3 +30,7 @@
 #site-guide .cashback-entry>span:last-child{min-width:0;flex:1}
 #site-guide .cashback-entry small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:767px){#site-guide .cashback-entry strong{white-space:nowrap;letter-spacing:-.6px}}
+
+/* Approved title wrapping, scoped to the cashback guide. */
+.cashback-guide .cashback-page-title{overflow-wrap:normal;word-break:keep-all}
+@media(max-width:767px){.cashback-guide .cashback-page-title span{display:block}}

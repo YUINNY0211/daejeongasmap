@@ -17,7 +17,7 @@
     });
     dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === index)));
     previous.disabled = index === 0;
-    next.textContent = index === slides.length - 1 ? '안내 종료' : '다음';
+    next.textContent = index === slides.length - 1 ? '닫기' : '다음';
     counter.textContent = `${index + 1} / ${slides.length}`;
     track.style.height = `${slides[index].scrollHeight}px`;
   }
