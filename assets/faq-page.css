@@ -2,3 +2,5 @@
 
 /* Independent /faq accordion; home popup styles remain untouched. */
 .faq-page .faq-category{margin:22px 0;background:transparent}.faq-page .faq-category>h2{font-size:18px;margin:0 0 12px;color:#174c34}.faq-page .faq-category>h2::before{content:none}.faq-page .faq-answer{background:#fff;font-size:14px;line-height:1.8}.faq-page .faq-item summary{font-size:14px}.faq-page .faq-answer ol{padding-left:22px}.faq-page .faq-category:last-child{margin-bottom:0}
+
+.faq-page .faq-answer a{font-weight:400;color:#176b45}

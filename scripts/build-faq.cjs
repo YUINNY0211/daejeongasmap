@@ -8,7 +8,7 @@ const faq=vm.runInNewContext('('+source[1]+')',Object.create(null),{timeout:1000
 if(faq.length!==11)throw Error('Expected exactly 11 approved questions');
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const groups=[['⛽ 주유소 정보 및 캐시백',0,6],['📍 지도 및 편의 기능',6,8],['💬 시민 참여 및 서비스 이용',8,11]];
-const sections=groups.map(([title,start,end])=>'<section class="faq-category"><h2>'+title+'</h2>'+faq.slice(start,end).map((item,i)=>'<details class="faq-item"'+(start+i===0?' open':'')+'><summary>'+esc(item.q)+'</summary><div class="faq-answer">'+item.a.replace(/href="#dockReport" data-faq-target="report"/g,'href="/#map-section"').replace(/href="#opinetCard" data-faq-target="opinet"/g,'href="/#opinetCard"')+'</div></details>').join('')+'</section>').join('\n');
+const sections=groups.map(([title,start,end])=>'<section class="faq-category"><h2>'+title+'</h2>'+faq.slice(start,end).map((item,i)=>'<details class="faq-item"'+' name="independent-faq"'+'><summary>'+esc(item.q)+'</summary><div class="faq-answer">'+item.a.replace(/<strong>('<a[^>]+>의견 보내기<\/a>')<\/strong>/g,'$1').replace(/href="#dockReport" data-faq-target="report"/g,'href="/#map-section"').replace(/href="#opinetCard" data-faq-target="opinet"/g,'href="/#opinetCard"')+'</div></details>').join('')+'</section>').join('\n');
 const menu=[['about','사이트 소개'],['notice','공지사항'],['sources','정보 출처 및 갱신 기준'],['faq','자주 묻는 질문(Q&A)'],['privacy','개인정보처리방침'],['terms','이용약관'],['contact','운영자 문의']].map(([slug,label])=>`<a href="/${slug}"${slug==='faq'?' aria-current="page"':''}>${label}</a>`).join('');
 const html=`<!doctype html>
 <html lang="ko"><head>
@@ -19,6 +19,7 @@ const html=`<!doctype html>
 <link rel="canonical" href="https://daejeongasmap.kr/faq">
 <link rel="stylesheet" href="/assets/info-pages.css?v=f066bfa70865"><link rel="stylesheet" href="/assets/faq-page.css">
 
+<script defer src="/assets/faq-accordion.js?v=1"></script>
 </head><body class="info-page faq-page">
 <a class="skip-link" href="/faq#content">본문 바로가기</a>
 <header class="page-header"><a class="page-home" href="/" aria-label="처음 화면으로"><span class="page-home-arrow" aria-hidden="true">←</span><span class="page-home-label">처음 화면으로</span></a><div class="article-heading"><p>🗺️ 대전 주유소 지도</p><h1>자주 묻는 질문(Q&A)</h1></div></header>
