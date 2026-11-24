@@ -62,5 +62,5 @@ export async function loadManuscript({body,status,document:doc,location,fetch:fe
 }
 if(typeof document!=='undefined'){
  const body=document.getElementById('pageBody'),status=document.getElementById('contentStatus');
- if(body&&status)loadManuscript({body,status,document,location:window.location,fetch:window.fetch.bind(window)}).catch(()=>{status.textContent='원고 경로를 확인할 수 없습니다.';status.hidden=false;});
+ if(body?.dataset.markdown&&status)loadManuscript({body,status,document,location:window.location,fetch:window.fetch.bind(window)}).catch(()=>{status.textContent='원고 경로를 확인할 수 없습니다.';status.hidden=false;});
 }
