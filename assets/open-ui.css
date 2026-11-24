@@ -80,3 +80,8 @@ body #stationPanel .station-detail .detail{padding-right:0}
 /* Shared banner menu target; retain existing responsive top/right offsets. */
 .approved-banner #menuToggle{display:grid;place-items:center;width:44px;height:44px;min-width:44px;min-height:44px;max-width:44px;padding:0;background:#fff;color:#174c34;box-sizing:border-box}
 .approved-banner #menuToggle svg{display:block;width:24px;height:24px;stroke-width:2}
+
+/* Compact drawer box only: preserve typography, icons and navigation. */
+#topMenu{inset:8px 8px auto auto;width:max-content;min-width:0;max-width:min(320px,calc(100vw - 16px));height:fit-content;min-height:0;max-height:calc(100dvh - 16px);padding:4px 8px;gap:0;grid-auto-rows:max-content;align-content:start;overflow-y:auto;overflow-x:hidden}
+#topMenu>a,#topMenu>button{min-height:48px;padding:6px 0;margin:0}
+@media(min-width:768px){#topMenu{inset:12px 12px auto auto;max-width:320px;max-height:calc(100dvh - 24px)}}
