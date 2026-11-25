@@ -477,7 +477,7 @@ function renderFaqMain(){
 
 
 function openPage(key){
-  const pageRoutes={operator:'/about',privacy:'/privacy',notice:'/notice',news:'/notice',updates:'/notice'};if(pageRoutes[key]){location.assign(pageRoutes[key]);return;}
+  const pageRoutes={operator:'/about',privacy:'/privacy',notice:'/notice',news:'/notice',updates:'/updates'};if(pageRoutes[key]){location.assign(pageRoutes[key]);return;}
   const title={'notice-summary':'📢 공지사항',guide:'🧭 이용 가이드',faq:'자주 묻는 질문',notice:'공지사항',updates:'업데이트',privacy:'개인정보 처리방침',operator:'서비스 소개',news:'소식'};
   $('modalTitle').textContent=title[key]||'';
   const box=$('modalContent');
