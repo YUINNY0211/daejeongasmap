@@ -1,0 +1,19 @@
+a.guide-link[data-page="updates"]{text-decoration:none}
+#modal[data-resource] #modalTitle{display:flex;align-items:center;gap:9px}
+#modal[data-resource] #modalTitle .home-menu-icon{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:10px}
+#modal[data-resource] #modalTitle svg{width:22px;height:22px}
+#modal[data-resource="cashback"] #modalTitle .home-menu-icon{background:#fff6df;color:#b68a24}
+#modal[data-resource="updates"] #modalTitle .home-menu-icon{background:#f4ecfa;color:#a272d0}
+#modal[data-resource] .resource-page-link{display:inline-block;margin-top:12px;color:#176b45}
+#modal[data-resource="updates"] .update-list{list-style:none;margin:0;padding:0}
+#modal[data-resource="updates"] .update-list>li+li{border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
+#modal[data-resource="updates"] .update-icon{display:none}
+#modal[data-resource="updates"] .update-heading h2{font-size:14px;margin:4px 0 10px}
+#modal[data-resource="updates"] time{color:#527563}
+#modal[data-resource="cashback"] .guide-slides{border:0;border-radius:0;margin:0}
+#modal[data-resource="cashback"] .guide-slide{padding:0;font:inherit}
+#modal[data-resource="cashback"] .guide-slide h2{font-size:14px;margin:0 0 8px;color:#1b4d34}
+#modal[data-resource="cashback"] .guide-image{max-height:43svh;margin:8px auto}
+#modal[data-resource="cashback"] .slide-controls{position:static;margin:10px 0 0;padding:0;font:inherit}
+#modal[data-resource="cashback"] .guide-dots{gap:0}
+#modal[data-resource="cashback"] .example-note{margin:6px 0;font:inherit;padding:8px}
