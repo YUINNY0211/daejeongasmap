@@ -37,4 +37,11 @@ body.feedback-lookup #map-section>.map-head{padding:6px 8px}
 @media(min-width:1100px) and (hover:hover) and (pointer:fine){#feedbackLookupPanel{bottom:22px}}
 @media(min-width:768px) and (hover:hover) and (pointer:fine){#feedbackLookupBar{font-size:15px;padding:9px 16px}#feedbackLookupExit{font-size:14px;padding:7px 14px}}
 @media(min-width:768px) and (hover:hover) and (pointer:fine){#feedbackLookupPanel{min-width:min(300px,var(--lookup-logo-max-width,300px),calc(100% - 20px));max-width:min(430px,calc(100% - 20px))}}
-@media(prefers-reduced-motion:reduce){#feedbackLookupBar{animation:none}}
+/* Mobile: move a composited gradient layer along the same 300% background path. */
+@media(max-width:767px),(pointer:coarse){
+ #feedbackLookupBar{position:relative;isolation:isolate;overflow:hidden;animation:none}
+ #feedbackLookupBar::before{content:'';position:absolute;left:0;top:0;width:300%;height:100%;z-index:0;pointer-events:none;background:linear-gradient(110deg,#124d38,#237a54,#42a67c,#237a54,#124d38);transform:translate3d(0,0,0);will-change:transform;animation:lookup-mobile-glowflow 5s ease-in-out infinite}
+ #feedbackLookupBar>.lookup-mode-label,#feedbackLookupExit{position:relative;z-index:1}
+}
+@keyframes lookup-mobile-glowflow{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-66.666667%,0,0)}}
+@media(prefers-reduced-motion:reduce){#feedbackLookupBar{animation:none}#feedbackLookupBar::before{animation:none;transform:translate3d(0,0,0);will-change:auto}}
