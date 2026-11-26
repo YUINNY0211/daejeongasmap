@@ -127,3 +127,20 @@ body.map-fullscreen:has(#stationPanel[hidden]) #floatingReport{display:none}
  body #stationPanel .station-tags .fuel-badge{flex-shrink:0;max-width:100%}
  body .floating-report.is-station-detail:before{content:'';position:absolute;left:0;top:0;width:100%;height:max(100%,calc(44px / var(--feedback-mobile-scale,1)));background:transparent}
 }
+
+/* Citizen feedback: clearer existing filter and legend, without changing map pins. */
+.summary.cashback-filter-row{min-height:34px;padding:4px 0;border:0;background:transparent;cursor:pointer;gap:8px}
+.cashback-filter-row .filter{position:relative;min-width:0;gap:7px;font-size:14px;font-weight:800;color:#52675b}
+.cashback-filter-row #cashbackOnly{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;clip-path:inset(50%);overflow:hidden;white-space:nowrap}
+.cashback-switch{position:relative;display:inline-block;flex:none;width:46px;height:26px;border-radius:999px;background:#a9b3ad}
+.cashback-switch::before{content:'';position:absolute;left:2px;top:2px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 2px #183d2d26}
+#cashbackOnly:checked+.cashback-switch{background:#087f53}
+#cashbackOnly:checked+.cashback-switch::before{transform:translateX(20px)}
+#cashbackOnly:checked+.cashback-switch::after{content:'';position:absolute;left:29px;top:9px;width:8px;height:5px;border-left:2px solid #087f53;border-bottom:2px solid #087f53;transform:rotate(-45deg)}
+#cashbackOnly:focus-visible+.cashback-switch{outline:3px solid #e88b32;outline-offset:3px}
+.cashback-filter-text{padding:2px 5px;border-radius:5px;background:transparent}
+.cashback-filter-row:has(#cashbackOnly:checked) .cashback-filter-text{background:#E5F3EB}
+.cashback-filter-row:has(#cashbackOnly:checked) .filter{color:#145b3c}
+.cashback-filter-row .counter{flex:none;margin-left:auto}
+.map-head .legend{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:2px 8px;font-size:12px;font-weight:750}
+.map-head .legend-confirmed{color:var(--g)}

@@ -1,8 +1,16 @@
-#currentLocationButton{position:absolute;z-index:23;right:12px;top:12px;display:grid;place-items:center;width:44px;height:44px;min-width:44px;min-height:44px;padding:10px;border:1px solid #d5e4dc;border-radius:11px;background:#fff;color:#355b46;box-shadow:0 2px 7px #183d2d25;touch-action:manipulation}
+#currentLocationButton{position:absolute;z-index:23;right:12px;top:12px;display:flex;align-items:center;justify-content:center;gap:5px;width:86px;height:44px;min-width:44px;min-height:44px;padding:5px 7px;border:1px solid #d5e4dc;border-radius:999px;background:#fff;color:#355b46;box-shadow:0 2px 7px #183d2d25;touch-action:manipulation}
 #currentLocationButton[hidden]{display:none}
 #currentLocationButton svg{display:block;width:22px;height:22px}
+#currentLocationButton .gps-button-label{font-size:13px;font-weight:750;line-height:18px;white-space:nowrap}
 #currentLocationButton[aria-busy="true"]{cursor:wait}
+#currentLocationButton{-webkit-tap-highlight-color:transparent;transition:transform 150ms ease,background-color 150ms ease}
+#currentLocationButton:active{transform:scale(.95);background:#E5F3EB;transition-duration:0ms}
+#currentLocationButton:focus-visible{outline:3px solid #e88b32;outline-offset:3px}
+#currentLocationButton[aria-busy="true"]{background:#E5F3EB;opacity:1}
+#currentLocationButton[aria-busy="true"] svg{animation:gps-icon-loading 1s linear infinite}
+@keyframes gps-icon-loading{to{transform:rotate(360deg)}}
 .gps-current-dot{display:block;box-sizing:border-box;width:18px;height:18px;border:3px solid #fff;border-radius:50%;background:#2878ed;box-shadow:0 0 0 5px #2878ed26,0 1px 4px #183d2d55;pointer-events:none}
-#currentLocationButton.gps-emphasis::before{content:'';position:absolute;inset:-1px;border:2px solid #57ad7e66;border-radius:inherit;pointer-events:none;animation:gps-control-pulse 3s ease-out 3}
-@keyframes gps-control-pulse{0%{transform:scale(1);opacity:.8}80%,100%{transform:scale(1.35);opacity:0}}
+#currentLocationButton.gps-emphasis::before{content:'';position:absolute;inset:-1px;border:2px solid #57ad7e99;border-radius:inherit;pointer-events:none;animation:gps-control-pulse 3s ease-out 3}
+@keyframes gps-control-pulse{0%{transform:scale(1);opacity:.8}80%,100%{transform:scale(1.42);opacity:0}}
 @media(prefers-reduced-motion:reduce){#currentLocationButton.gps-emphasis::before{animation:none;content:none}}
+@media(prefers-reduced-motion:reduce){#currentLocationButton{transition:none}#currentLocationButton:active{transform:none}#currentLocationButton[aria-busy="true"] svg{animation:none;stroke-width:2.5}}
