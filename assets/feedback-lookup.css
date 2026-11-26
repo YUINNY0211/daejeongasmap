@@ -1,0 +1,40 @@
+#feedbackLookupHome .feedback-heading{margin-bottom:8px}
+#feedbackLookupHome h2{display:flex;align-items:center;gap:6px}
+#feedbackLookupHome h2 svg{width:16px;height:16px;flex:none;color:var(--g)}
+#feedbackLookupForm.search-row{display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:0;align-items:center;border:1px solid #dbe8e0;border-radius:13px;background:#fff}
+#feedbackLookupForm input{border:0;background:transparent}
+#feedbackLookupForm .search-go{background:white;color:var(--g)}
+#feedbackLookupPick{display:flex;align-items:center;gap:7px;margin-top:6px;width:100%;min-height:44px;padding:6px 10px;border:1px solid #cce0d2;border-radius:11px;background:#edf6f0;color:#185d42;font:inherit;font-size:13px;font-weight:700;text-align:left}
+#feedbackLookupPick .lookup-pick-label{flex:1}
+#feedbackLookupPick svg{width:17px;height:17px;flex:none}
+#feedbackLookupPick .lookup-pick-arrow{width:14px;height:14px}
+#feedbackLookupBar[hidden],#feedbackLookupPanel[hidden],#feedbackLookupMore[hidden]{display:none}
+body.feedback-lookup #floatingReport,body.feedback-lookup #stationPanel{display:none}
+body.feedback-lookup #map-section>.map-head>span{display:none}
+body.feedback-lookup #map-section>.map-head{padding:6px 8px}
+#feedbackLookupBar{box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding:9px 12px;min-height:28px;border-radius:40px;background:linear-gradient(110deg,#124d38,#237a54,#42a67c,#237a54,#124d38);background-size:300% 100%;animation:glowflow 5s ease-in-out infinite;box-shadow:0 3px 9px #17664425;color:#f1fff6;font-size:13px;font-weight:650;white-space:nowrap}
+.lookup-mode-label{display:inline-flex;align-items:center;gap:7px}
+.lookup-mode-label i{width:7px;height:7px;flex:none;border-radius:50%;background:#d0ffe2;box-shadow:0 0 8px #d0ffe299}
+#feedbackLookupExit{flex:none;background:#fff;color:#185d42;border:0;border-radius:22px;padding:7px 11px;font-size:12px;font-weight:800;min-height:28px}
+@keyframes glowflow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+#feedbackLookupPanel{box-sizing:border-box;position:absolute;z-index:21;left:10px;bottom:10px;width:fit-content;max-width:calc(100% - 20px);max-height:calc(100% - 80px);overflow:auto;margin:0;padding:6px 8px;border:1px solid #d5e7dc;border-radius:14px;background:rgba(245,251,247,.9);box-shadow:none;color:var(--ink)}
+.lookup-panel-heading{display:flex;align-items:baseline;gap:6px;padding-bottom:4px;border-bottom:1px solid #cfdfd5}
+#feedbackLookupName{flex:1;min-width:0;margin:0;font-size:16px;font-weight:800;line-height:1.3;overflow-wrap:anywhere;white-space:normal;overflow:visible;text-overflow:clip}
+.lookup-period{flex:none;font-size:14px;font-weight:800;color:var(--muted);white-space:nowrap}
+#feedbackLookupRows{margin-top:4px;min-width:0}
+.lookup-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:1px 0;font-size:14px;line-height:1.5;flex-wrap:nowrap}
+.lookup-result{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.lookup-result i{display:inline-block;flex:none;width:7px;height:7px;border-radius:50%;background:currentColor}
+.lookup-result.received{color:#087f53}.lookup-result.not-received{color:#dc5555}
+.lookup-row time{color:var(--muted);font-size:12px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.lookup-message,.lookup-note{font-size:12px;line-height:1.5;color:var(--muted);margin:3px 0 0}
+.lookup-note{font-size:11px;contain:inline-size;overflow-wrap:break-word}
+#feedbackLookupMore{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:28px;padding:1px 0;border:0;background:transparent;color:#355b46;font-size:12px}
+#feedbackLookupMore svg{width:15px;height:15px}#feedbackLookupMore[aria-expanded="true"] svg{transform:rotate(180deg)}
+@media(max-width:359px){#feedbackLookupBar{gap:5px;padding:9px 9px}.lookup-mode-label{gap:5px}#feedbackLookupExit{padding:7px 8px}.lookup-row{gap:9px}}
+@media(max-width:599px){#feedbackLookupPanel{left:6px;bottom:0;max-width:calc(100% - 12px)}}
+@media(min-width:600px){#feedbackLookupPanel{bottom:14px}}
+@media(min-width:1100px) and (hover:hover) and (pointer:fine){#feedbackLookupPanel{bottom:22px}}
+@media(min-width:768px) and (hover:hover) and (pointer:fine){#feedbackLookupBar{font-size:15px;padding:9px 16px}#feedbackLookupExit{font-size:14px;padding:7px 14px}}
+@media(min-width:768px) and (hover:hover) and (pointer:fine){#feedbackLookupPanel{min-width:min(300px,var(--lookup-logo-max-width,300px),calc(100% - 20px));max-width:min(430px,calc(100% - 20px))}}
+@media(prefers-reduced-motion:reduce){#feedbackLookupBar{animation:none}}
