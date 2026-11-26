@@ -28,7 +28,23 @@ window.computeFeedbackPosition=function({viewport,button,safe={},mapRect=null,pa
  function update(){
   frame=null;const v=window.visualViewport,root=getComputedStyle(document.documentElement);
   const inset=edge=>parseFloat(root.getPropertyValue('--feedback-safe-'+edge))||0;
-  const panelAnchor=!!rect(panel);button.classList.toggle('is-station-detail',!!rect(panel));
+  const mobile=window.matchMedia('(max-width:767px)').matches,fullscreen=document.body.classList.contains('map-fullscreen');
+  const hero=document.querySelector('.hero');
+  button.dataset.homeScrolled=String((hero?hero.getBoundingClientRect().bottom<=0:window.scrollY>80));
+  const panelAnchor=!!rect(panel);button.classList.toggle('is-station-detail',panelAnchor);
+  if(mobile&&fullscreen&&panelAnchor){
+   const p=rect(panel),m=rect(map),d=rect(dock),viewportLeft=v?.offsetLeft||0,viewportTop=v?.offsetTop||0;
+   const right=viewportLeft+(v?.width||window.innerWidth)-inset('right')-10,left=p.right+8;
+   const scale=Math.min(1,Math.max(0,right-left)/(button.offsetWidth+4));
+   button.style.setProperty('--feedback-mobile-scale',String(scale));
+   const height=(button.offsetHeight+14)*scale;
+   const bottom=Math.min(p.bottom,viewportTop+(v?.height||window.innerHeight)-inset('bottom')-12,m?m.bottom-36:Infinity,d?d.top-12:Infinity);
+   button.style.setProperty('--feedback-left',(left+2*scale)+'px');
+   button.style.setProperty('--feedback-top',(Math.max(p.top,bottom-height)+2*scale)+'px');
+   button.dataset.autoPositioned='true';button.dataset.positionedStation=panel.dataset?.stationId||'';
+   return;
+  }
+  button.style.removeProperty('--feedback-mobile-scale');
   const contentRects=panelAnchor?[...panel.querySelectorAll('.station-identity-group,.station-tools')].map(rect).filter(Boolean):[];
   const position=window.computeFeedbackPosition({panelAnchor,contentRects,contactRect:panelAnchor?rect(panel.querySelector('.station-detail')):null,viewport:{left:v?.offsetLeft||0,top:v?.offsetTop||0,width:v?.width||window.innerWidth,height:v?.height||window.innerHeight},button:button.getBoundingClientRect(),safe:{left:inset('left'),right:inset('right'),top:inset('top'),bottom:inset('bottom')},mapRect:rect(map),panelRect:rect(panel),dockRect:rect(dock),searchRect:rect(search)});
   button.style.setProperty('--feedback-left',position.left+'px');button.style.setProperty('--feedback-top',position.top+'px');button.dataset.autoPositioned='true';

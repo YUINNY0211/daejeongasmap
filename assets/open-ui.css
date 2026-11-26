@@ -109,3 +109,11 @@ body .feedback-bubble-shape path{fill-opacity:.7;stroke-opacity:1}
 
 /* Hide the map balloon together with the closed station panel; home remains unchanged. */
 body.map-fullscreen:has(#stationPanel[hidden]) #floatingReport{display:none}
+
+/* Mobile-only feedback lane and home entry visibility; desktop keeps its existing placement. */
+@media(max-width:767px){
+ body.map-fullscreen #map-section.has-station #stationPanel{max-width:calc(100% - 94px)}
+ body .floating-report.is-station-detail{scale:var(--feedback-mobile-scale,1);transform-origin:top left}
+ body:not(.map-fullscreen) #floatingReport{visibility:hidden;pointer-events:none}
+ body:not(.map-fullscreen) #floatingReport[data-home-scrolled="true"][data-auto-positioned="true"]{visibility:visible;pointer-events:auto}
+}
