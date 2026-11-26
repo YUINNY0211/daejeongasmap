@@ -1,11 +1,11 @@
 /* Shared glass surface; text/icon opacity always stays at 1. */
-body #stationPanel{background:rgba(255,255,255,.5);background-image:none;opacity:1;-webkit-backdrop-filter:blur(14px) saturate(115%);backdrop-filter:blur(14px) saturate(115%);border-color:rgba(255,255,255,.78);box-shadow:0 8px 26px #183d2d24}
+body #stationPanel{background:transparent;background-image:none;opacity:1;-webkit-backdrop-filter:none;backdrop-filter:none;border:0;box-shadow:none}
 body #stationPanel .station-surface{display:flex;flex-direction:column;gap:8px;background:transparent;opacity:1;filter:none;backdrop-filter:none;-webkit-backdrop-filter:none}
-body #stationPanel .station-identity-group{order:0;background:rgba(245,251,247,.9);border:1px solid #d5e7dc;border-radius:12px;padding:9px 10px;box-shadow:0 2px 7px #183d2d0c}
+body #stationPanel .station-identity-group{order:0;background:rgba(245,251,247,.8);border:1px solid #d5e7dc;border-radius:12px;padding:9px 10px;box-shadow:none}
 body #stationPanel .compact-head{gap:8px}
 body #stationPanel .sheet-identity{background:transparent;border:0;padding:0;margin:5px 0 0;gap:6px 10px}
 body #stationPanel .station-tags{margin:5px 0 0}
-body #stationPanel .station-detail{order:1;margin:0;padding:8px 10px;min-height:0;background:rgba(248,252,250,.9);border:1px solid #dceae1;border-radius:10px;box-shadow:0 2px 7px #183d2d09;overflow-wrap:anywhere}
+body #stationPanel .station-detail{order:1;margin:0;padding:0;min-height:0;background:transparent;border:0;border-radius:0;box-shadow:none;overflow-wrap:anywhere}
 body #stationPanel .station-detail .detail{margin:0;line-height:1.6}
 body #stationPanel .station-tools{order:2;margin:0;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
 .station-address{display:inline-block;max-width:100%;border-radius:5px}
@@ -16,11 +16,10 @@ body #stationPanel .station-tools{order:2;margin:0;grid-template-columns:repeat(
 #informationConfirm #informationSubmit{margin-bottom:0}
 .guide-step-icon{font-size:24px;line-height:1}
 @media(max-width:599px){
- body #stationPanel .station-detail{min-height:64px;padding-right:78px}
+ body #stationPanel .station-detail{min-height:0;padding-right:0}
  body #stationPanel .station-detail .detail{padding-right:0}
  .guide-step-icon{font-size:22px}
 }
-@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){body #stationPanel .station-identity-group,body #stationPanel .station-detail{background:#f8fcfa}}
 @media(prefers-reduced-motion:reduce){.address-attention{animation:none;background:#e2f4e8}}
 @media(max-width:599px){
  body.map-fullscreen #map-section.has-station{grid-template-rows:auto minmax(0,1fr)}
@@ -37,7 +36,7 @@ body #stationPanel .station-tools{order:2;margin:0;grid-template-columns:repeat(
 .search-row .map-home-text::after{content:'';position:absolute;right:0;top:12px;bottom:12px;width:1px;background:#dbe8e0}
 .search-row input{height:44px;min-width:0;width:100%;padding:0 8px;border:0;border-radius:0;background:transparent}
 .search-row .search-go{position:static;height:44px;width:44px;border-radius:0 12px 12px 0}
-body #stationPanel .station-detail{min-height:64px;padding-right:78px}
+body #stationPanel .station-detail{min-height:0;padding-right:0}
 body #stationPanel .station-detail .detail{padding-right:0}
 @media(max-width:599px){
  .search-row .map-home-text{padding:0 8px;font-size:12px}
@@ -85,3 +84,28 @@ body #stationPanel .station-detail .detail{padding-right:0}
 #topMenu{inset:8px 8px auto auto;width:max-content;min-width:0;max-width:min(320px,calc(100vw - 16px));height:fit-content;min-height:0;max-height:calc(100dvh - 16px);padding:4px 8px;gap:0;grid-auto-rows:max-content;align-content:start;overflow-y:auto;overflow-x:hidden}
 #topMenu>a,#topMenu>button{min-height:48px;padding:6px 0;margin:0}
 @media(min-width:768px){#topMenu{inset:12px 12px auto auto;max-width:320px;max-height:calc(100dvh - 24px)}}
+
+/* Content-sized shared information surface; empty panel space passes through to the map. */
+body #stationPanel{pointer-events:none;contain:none}
+body #stationPanel .station-surface{width:fit-content;max-width:100%;min-width:0;align-items:flex-start;pointer-events:none}
+body #stationPanel .station-identity-group{box-sizing:border-box;width:fit-content;max-width:100%;min-width:0;pointer-events:auto}
+body #stationPanel .station-detail,body.map-fullscreen #stationPanel .station-detail{overflow:visible;padding:0;margin:0;min-height:0;background:transparent;border:0;box-shadow:none}
+body #stationPanel .station-tools{align-self:stretch;pointer-events:none}
+body #stationPanel .station-tools button{pointer-events:auto}
+body #stationPanel .compact-title h2{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+body #stationPanel .sheet-identity{flex-wrap:wrap}
+body #stationPanel .station-contact-line{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:12px}
+body #stationPanel .station-phone,body #stationPanel .station-contact-line .station-hours{white-space:nowrap}
+body #stationPanel .station-hours-specific{white-space:pre-wrap;overflow-wrap:anywhere}
+@media(min-width:600px){
+ body.map-fullscreen #map-section.has-station #stationPanel{width:fit-content;max-width:calc(100% - 24px)}
+}
+
+/* Phase 2: left anchor without changing the approved information surface. */
+body #stationPanel,body.map-fullscreen #map-section.has-station #stationPanel{left:10px;right:auto;width:fit-content;max-width:calc(100% - 20px);margin-left:0;margin-right:0}
+@media(max-width:599px){body.map-fullscreen #map-section.has-station #stationPanel{left:6px;max-width:calc(100% - 12px)}}
+body .floating-report.is-station-detail{width:84px;height:60px;font-size:22px;border-radius:24px}
+body .feedback-bubble-shape path{fill-opacity:.7;stroke-opacity:1}
+
+/* Hide the map balloon together with the closed station panel; home remains unchanged. */
+body.map-fullscreen:has(#stationPanel[hidden]) #floatingReport{display:none}
