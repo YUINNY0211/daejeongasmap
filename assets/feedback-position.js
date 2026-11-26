@@ -22,7 +22,7 @@ window.computeFeedbackPosition=function({viewport,button,safe={},mapRect=null,pa
 (()=>{
  const button=document.getElementById('floatingReport');if(!button)return;
  const panel=document.getElementById('stationPanel'),map=document.getElementById('mapViewport'),dock=document.querySelector('.dock'),search=document.getElementById('search-section');
- let frame=null;
+ let frame=null;const titleMeasure=document.createElement('canvas').getContext('2d');
  const visible=element=>element&&!element.hidden&&element.getClientRects().length&&getComputedStyle(element).display!=='none';
  const rect=element=>visible(element)?element.getBoundingClientRect():null;
  function update(){
@@ -32,9 +32,20 @@ window.computeFeedbackPosition=function({viewport,button,safe={},mapRect=null,pa
   const hero=document.querySelector('.hero');
   button.dataset.homeScrolled=String((hero?hero.getBoundingClientRect().bottom<=0:window.scrollY>80));
   const panelAnchor=!!rect(panel);button.classList.toggle('is-station-detail',panelAnchor);
+  const title=panel?.querySelector('.compact-title h2');
+  if(title){
+   if(mobile&&panelAnchor&&titleMeasure){
+    const style=getComputedStyle(title),parent=title.parentElement,parentStyle=getComputedStyle(parent);
+    const available=parent.clientWidth-parseFloat(parentStyle.paddingLeft)-parseFloat(parentStyle.paddingRight);
+    titleMeasure.font=style.fontWeight+' 16px '+style.fontFamily;
+    const natural=titleMeasure.measureText(title.textContent).width;
+    const size=Math.max(14,Math.min(16,16*Math.max(0,available)/Math.max(1,natural)));
+    title.style.setProperty('--station-mobile-title-size',size.toFixed(2)+'px');
+   }else title.style.removeProperty('--station-mobile-title-size');
+  }
   if(mobile&&fullscreen&&panelAnchor){
    const p=rect(panel),m=rect(map),d=rect(dock),viewportLeft=v?.offsetLeft||0,viewportTop=v?.offsetTop||0;
-   const right=viewportLeft+(v?.width||window.innerWidth)-inset('right')-10,left=p.right+8;
+   const right=viewportLeft+(v?.width||window.innerWidth)-inset('right')-10,left=p.right+6;
    const scale=Math.min(1,Math.max(0,right-left)/(button.offsetWidth+4));
    button.style.setProperty('--feedback-mobile-scale',String(scale));
    const height=(button.offsetHeight+14)*scale;

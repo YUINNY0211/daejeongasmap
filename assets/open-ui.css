@@ -112,8 +112,18 @@ body.map-fullscreen:has(#stationPanel[hidden]) #floatingReport{display:none}
 
 /* Mobile-only feedback lane and home entry visibility; desktop keeps its existing placement. */
 @media(max-width:767px){
- body.map-fullscreen #map-section.has-station #stationPanel{max-width:calc(100% - 94px)}
+ body.map-fullscreen #map-section.has-station #stationPanel{max-width:calc(100% - 84px)}
  body .floating-report.is-station-detail{scale:var(--feedback-mobile-scale,1);transform-origin:top left}
  body:not(.map-fullscreen) #floatingReport{visibility:hidden;pointer-events:none}
  body:not(.map-fullscreen) #floatingReport[data-home-scrolled="true"][data-auto-positioned="true"]{visibility:visible;pointer-events:auto}
+}
+
+/* Mobile spacing only: keep all information and allow wrapping when needed. */
+@media(max-width:767px){
+ body #stationPanel .compact-title{padding-right:36px}
+ body #stationPanel .compact-title h2{font-size:var(--station-mobile-title-size,16px)}
+ body #stationPanel .station-tags{gap:2px}
+ body #stationPanel .station-tags .station-badge{padding:3px 5px}
+ body #stationPanel .station-tags .fuel-badge{flex-shrink:0;max-width:100%}
+ body .floating-report.is-station-detail:before{content:'';position:absolute;left:0;top:0;width:100%;height:max(100%,calc(44px / var(--feedback-mobile-scale,1)));background:transparent}
 }
